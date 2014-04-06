@@ -57,7 +57,6 @@ namespace Abraca {
 			typeof(string),
 			typeof(string),
 			typeof(string),
-			typeof(string),
 			typeof(int)
 		};
 

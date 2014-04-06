@@ -41,8 +41,6 @@ namespace Abraca {
 
 		public MainWindow (Gtk.Application app, Client client)
 		{
-			instance = this;
-
 			Object(application: app);
 
 			_client = client;
@@ -73,6 +71,8 @@ namespace Abraca {
 				Configurable.save();
 				return false;
 			});
+
+			instance = this;
 		}
 
 		public void on_application_idle ()
