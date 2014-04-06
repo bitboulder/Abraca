@@ -104,6 +104,13 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 
 		var entry = widget as Gtk.Entry;
 		var text = entry.get_text();
+		if(text.size()>0 && !text.contains(":")){
+			for(int i=0;i<text.size();i++) if(text.substring(i,1)==" "){
+				text = text.substring(0,i) + "\\" + text.substring(i);
+				i++;
+			}	
+			text = "*" + text + "*";
+		}
 
 		if (text.length > 0) {
 			if (Xmms.Collection.parse(text, out coll)) {
@@ -112,6 +119,10 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 				// Throttle collection querying
 				if (_timer == 0) {
 					_timer = GLib.Timeout.add(450, on_collection_query_timeout);
+				}
+				if(text.size()>3  && text.substring(0,3)=="in:"){
+					color=Gdk.RGBA();
+					color.parse("#ffff66");
 				}
 			} else {
 				color = Gdk.RGBA();
