@@ -87,17 +87,29 @@ namespace Abraca {
 			pos_map.clear();
 
 
-			unowned Xmms.ListIter list_iter;
-			val.get_list_iter(out list_iter);
+			bool iscoll=val.is_type(Xmms.ValueType.COLL);
+			uint n=0;
+			int i=0;
+			Xmms.Collection coll = null;
+			unowned Xmms.ListIter list_iter = null;
+			if(iscoll){
+				val.get_coll(out coll);
+				n=coll.idlist_get_size();
+			}else{
+				val.get_list_iter(out list_iter);
+				list_iter.first();
+ 			}
 
-			for (list_iter.first(); list_iter.valid(); list_iter.next()) {
+			while (iscoll ? i<n : list_iter.valid()) {
 				Gtk.TreeRowReference row;
 				Gtk.TreePath path;
 				Xmms.Value entry;
 				int id = 0;
 
-				if (!(list_iter.entry(out entry) && entry.get_int(out id))) {
-					continue;
+				if(iscoll){
+					if(!coll.idlist_get_index(i,out id)) continue;
+				}else{
+					if (!(list_iter.entry(out entry) && entry.get_int(out id))) continue;
 				}
 
 				if (is_first) {
@@ -117,6 +129,8 @@ namespace Abraca {
 				pos_map.set((int) id, row);
 
 				if(replacenadd) client.xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST, id);
+
+				if(iscoll) i++; else list_iter.next();
 			}
 			replacenadd = false;
 

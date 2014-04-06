@@ -136,6 +136,10 @@ namespace Abraca {
 
 		public void query_collection (Xmms.Collection coll, Xmms.NotifierFunc? callback=null)
 		{
+			query_collection_ex(coll,"",callback);
+		}
+
+		public void query_collection_ex(Xmms.Collection coll, string native_sort_pl, Xmms.NotifierFunc? callback=null) {
 			Xmms.Value order = new Xmms.Value.from_list();
 			Xmms.Result res;
 
@@ -150,7 +154,10 @@ namespace Abraca {
 				order.list_append(new Xmms.Value.from_string(sorting.field));
 			}
 
-			res = client.xmms.coll_query_ids(coll, order);
+			if (native_sort_pl!="")
+				res = client.xmms.coll_get(native_sort_pl, "Playlists");
+			else
+				res = client.xmms.coll_query_ids(coll, order);
 			res.notifier_set(on_coll_query_ids);
 			if (callback != null) {
 				res.notifier_set(callback);

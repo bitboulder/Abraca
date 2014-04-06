@@ -136,6 +136,11 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 
 	private bool on_collection_query_timeout()
 	{
+		return on_collection_query_timeout_ex(true);
+	}
+
+	private bool on_collection_query_timeout_ex(bool filter_native_sort)
+	{
 		Xmms.Collection coll;
 
 		if (_current_query == null) {
@@ -151,9 +156,13 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 
 		_pending_queries.offer(_current_query);
 
-		treeview.query_collection(coll, (val) => {
+		string native_sort_pl="";
+		if(filter_native_sort && _current_query.size()>=13 &&
+				_current_query.substring(0,13)=="in:Playlists/")
+			native_sort_pl = _current_query.substring(13);
+		treeview.query_collection_ex(coll, native_sort_pl, (val) => {
 			var s = _pending_queries.poll();
-			if (s != null && val.list_get_size() > 0) {
+			if (s != null && !val.is_type(Xmms.ValueType.COLL) && val.list_get_size() > 0) {
 				if (get_child().has_focus) {
 					_unsaved_query = s;
 				} else if (_pending_queries.is_empty) {
