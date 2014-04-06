@@ -40,7 +40,11 @@ namespace Abraca {
 		private GLib.List<Gtk.MenuItem>
 			_collection_menu_item_when_coll_selected = null;
 		private GLib.List<Gtk.MenuItem>
+			_collection_menu_item_when_pllst_selected = null;
+		private GLib.List<Gtk.MenuItem>
 			_collection_menu_item_when_ns_selected = null;
+
+		private Gtk.MenuItem _collection_menu_item_activate;
 
 		/** to keep track of our last drop target */
 		private Gtk.TreePath _drop_path = null;
@@ -115,6 +119,11 @@ namespace Abraca {
 			foreach (var i in _collection_menu_item_when_ns_selected) {
 				i.sensitive = (n == 1);
 			}
+
+			bool sens = n==2 && ((CollectionsModel)model).path_is_child_of_type(
+					model.get_path(iter), CollectionsModel.CollectionType.Playlist);
+			foreach(var i in _collection_menu_item_when_pllst_selected)
+				i.sensitive = sens;
 		}
 
 
@@ -347,24 +356,21 @@ namespace Abraca {
 		                               Gtk.TreePath path,
 		                               Gtk.TreeViewColumn column)
 		{
-			CollectionsModel store = (CollectionsModel) model;
-			CollectionsModel.CollectionType type;
-			Gtk.TreeIter iter;
-			string name;
-
-			store.get_iter(out iter, path);
-			store.get(iter, CollectionsModel.Column.Name, out name);
-
-			type = CollectionsModel.CollectionType.Collection;
-			if (store.path_is_child_of_type(path, type)) {
-				if (Client.collection_needs_quoting(name))
-					name = "\"" + name + "\"";
-				search.search("in:" + name);
-			} else {
-				client.xmms.playlist_load(name);
-			}
+			on_menu_collection_get(_collection_menu_item_activate);
 		}
 
+		private void on_menu_collection_activate(Gtk.MenuItem item) {
+			Gtk.TreeIter iter;
+			if (get_selection().get_selected(null, out iter)) {
+				Gtk.TreePath path = model.get_path(iter);
+				if (path.get_depth() == 2 && ((CollectionsModel)model).path_is_child_of_type(
+							path, CollectionsModel.CollectionType.Playlist)){
+					string name;
+					model.get(iter, CollectionsModel.Column.Name, out name);
+					client.xmms.playlist_load(name);
+				}
+  			}
+		}
 
 
 		private void on_menu_collection_get(Gtk.MenuItem item) {
@@ -483,6 +489,15 @@ namespace Abraca {
 			Gtk.ImageMenuItem item;
 
 			_collection_menu = new Gtk.Menu();
+
+			item = new Gtk.ImageMenuItem.with_mnemonic(_("A_ctivate"));
+			item.image = new Gtk.Image.from_stock(
+					Gtk.STOCK_APPLY, Gtk.IconSize.MENU
+			);
+			item.activate.connect(on_menu_collection_activate);
+			_collection_menu_item_when_pllst_selected.prepend(item);
+			_collection_menu.append(item);
+			_collection_menu_item_activate=item;
 
 			item = new Gtk.ImageMenuItem.with_mnemonic(_("_Show"));
 			item.image = new Gtk.Image.from_stock(
