@@ -28,6 +28,8 @@ namespace Abraca {
 		private NowPlaying _now_playing;
 		private bool is_idle = false;
 		private MetadataResolver resolver;
+		private Gtk.Label _time_label;
+		public static MainWindow instance = null;
 
 		private const ActionEntry[] actions = {
 			{ "playlist-sorting", on_menu_playlist_configure_sorting },
@@ -39,6 +41,8 @@ namespace Abraca {
 
 		public MainWindow (Gtk.Application app, Client client)
 		{
+			instance = this;
+
 			Object(application: app);
 
 			_client = client;
@@ -203,9 +207,13 @@ namespace Abraca {
 			var search = filter.get_searchable ();
 
 			var playlist = new PlaylistWidget (client, resolver, _config, medialib, search);
+			_time_label = new Gtk.Label(_(""));
+			var pbox = new Gtk.VBox(false,0);
+			pbox.pack_start(playlist, true, true, 0);
+			pbox.pack_start(_time_label, false, false, 0);
 
 			_right_hpaned.pack1(filter, true, true);
-			_right_hpaned.pack2(playlist, false, true);
+			_right_hpaned.pack2(pbox, false, true);
 
 			var collections = new CollectionsView (client, search);
 			scrolled.add (collections);
@@ -227,6 +235,17 @@ namespace Abraca {
 			add_accel_group(accel_group);
 
 			return vbox;
+		}
+
+		private ulong pl=0;
+		public void playtime_set(ulong plnew) {
+			if(plnew!=0) pl=plnew;
+			ulong  pl_min = ((pl+30)/60)%60;
+			ulong  pl_hrh = (pl+30)/60/60;
+
+			Time tm = Time.local(time_t()+(time_t)pl);
+			string text = GLib.Markup.printf_escaped("<span size=\"small\" foreground=\"#666666\">%s:</span> %lu:%02lu <span size=\"small\" foreground=\"#666666\"> -  %s:</span> %d:%02d",_("Length"),pl_hrh,pl_min,_("End"),tm.hour,tm.minute);
+			_time_label.set_markup(text);
 		}
 
 		private void on_menu_playlist_configure_sorting(GLib.SimpleAction action, GLib.Variant? state)

@@ -328,6 +328,8 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 		if (status == Xmms.PlaybackStatus.STOP) {
 			update_time_label();
 		}
+
+		if(MainWindow.instance!=null) MainWindow.instance.playtime_set(0);
 	}
 
 	/**

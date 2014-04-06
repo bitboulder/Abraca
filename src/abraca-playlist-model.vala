@@ -36,7 +36,8 @@ namespace Abraca {
 			ARTIST,
 			ALBUM,
 			GENRE,
-			INFO
+			INFO,
+			DURATION
 		}
 
 		/** keep track of current playlist position */
@@ -56,7 +57,8 @@ namespace Abraca {
 			typeof(string),
 			typeof(string),
 			typeof(string),
-			typeof(string)
+			typeof(string),
+			typeof(int)
 		};
 
 		private MetadataRequestor requestor;
@@ -138,6 +140,8 @@ namespace Abraca {
 				playlist_map.remove_path((int) mid, path);
 				remove(iter);
 			}
+
+			on_playtime_update();
 		}
 
 
@@ -164,6 +168,19 @@ namespace Abraca {
 				move_before (ref iter, niter);
 		}
 
+		private void on_playtime_update() {
+			/* Calculate playback time */
+			int i,n=iter_n_children(null);
+			ulong pl=0;
+			for(i=0;i<n;i++){
+				Gtk.TreeIter it;
+				int dur;
+				if(!iter_nth_child(out it,null,i)) continue;
+				get(it,Column.DURATION,out dur);
+				pl+=dur;
+			}
+			if(MainWindow.instance!=null) MainWindow.instance.playtime_set(pl);
+		}
 
 		/**
 		 * Update the position indicator to point at the
@@ -342,6 +359,7 @@ namespace Abraca {
 			string album, title, genre, artist = null;
 			string info;
 			int status, mid;
+			int dur;
 
 			val.dict_entry_get_int("id", out mid);
 			val.dict_entry_get_int("status", out status);
@@ -351,6 +369,9 @@ namespace Abraca {
 			}
 			if (!val.dict_entry_get_string("genre", out genre)) {
 				genre = _("Unknown");
+			}
+			if (!val.dict_entry_get_int("duration", out dur)) {
+				dur = 0;
 			}
 
 			if (val.dict_entry_get_string("title", out title)) {
@@ -404,9 +425,12 @@ namespace Abraca {
 					Column.INFO, info,
 					Column.ARTIST, artist,
 					Column.ALBUM, album,
-					Column.GENRE, genre
+					Column.GENRE, genre,
+					Column.DURATION, dur/1000
 				);
 			}
+
+ 			on_playtime_update();
 
 			return false;
 		}
