@@ -42,6 +42,7 @@ namespace Abraca {
 
 		private Client client;
 		private MetadataRequestor requestor;
+		public bool replacenadd;
 
 		public FilterModel (Client c, MetadataResolver resolver, owned string[] props)
 		{
@@ -67,6 +68,8 @@ namespace Abraca {
 			client.medialib_entry_changed.connect((client, res) => {
 					on_medialib_info(res);
 			});
+
+			replacenadd = false;
 		}
 
 
@@ -112,7 +115,10 @@ namespace Abraca {
 				row = new Gtk.TreeRowReference(this, path);
 
 				pos_map.set((int) id, row);
+
+				if(replacenadd) client.xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST, id);
 			}
+			replacenadd = false;
 
 			return true;
 		}

@@ -374,6 +374,14 @@ namespace Abraca {
 
 
 		private void on_menu_collection_get(Gtk.MenuItem item) {
+			on_menu_collection_getadd(false);
+		}
+
+		private void on_menu_collection_add(Gtk.MenuItem item) {
+			on_menu_collection_getadd(true);
+		}
+
+		private void on_menu_collection_getadd(bool replacenadd) {
 			Gtk.TreeIter iter;
 
 			var selection = get_selection();
@@ -398,7 +406,7 @@ namespace Abraca {
 					if (Client.collection_needs_quoting(full_name))
 						full_name = "\"" + full_name + "\"";
 
-					search.search ("in:" + full_name);
+					search.search ("in:" + full_name, replacenadd);
 				}
 			}
 		}
@@ -504,6 +512,11 @@ namespace Abraca {
 				Gtk.Stock.FIND, Gtk.IconSize.MENU
 			);
 			item.activate.connect(on_menu_collection_get);
+			_collection_menu_item_when_coll_selected.prepend(item);
+			_collection_menu.append(item);
+
+			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_ADD, null);
+			item.activate.connect(on_menu_collection_add);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
