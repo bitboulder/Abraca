@@ -194,6 +194,7 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 	{
 		var entry = get_child() as Gtk.Entry;
 		((FilterModel)treeview.model).replacenadd = replacenadd;
+		entry.text = "";
 		entry.text = text;
 	}
 
