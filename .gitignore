@@ -7,3 +7,5 @@ config.log
 *.orig
 .waf*
 .lock-waf*
+debian/abraca*
+debian/files

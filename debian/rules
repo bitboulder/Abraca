@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	git submodule init
+	git submodule update
+	cd external/subzero
+	./waf configure
+	./waf build
+	cd ../..
+	./waf configure --prefix=/usr
+	./waf build
+
+override_dh_auto_install:
+	./waf install --destdir=$(CURDIR)/debian/abraca
+
+override_dh_auto_clean:
+	rm -rf external/subzero/* external/subzero/.[a-zA-Z]*
+	./waf clean || true
+	rm -rf .waf* .lock-waf*

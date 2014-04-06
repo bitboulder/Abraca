@@ -1,0 +1,18 @@
+Source: abraca
+Section: sound
+Priority: optional
+Maintainer: Frank Duckhorn <git@bitboulder.net>
+Build-Depends: valac (>= 0.20),
+               libxmmsclient-glib-dev (>= 0.8),
+               libgee-dev,
+               libgtk-3-dev,
+Standards-Version: 3.9.3
+Homepage: http://abraca.github.com/Abraca/
+Vcs-Git: git://github.com/bitboulder/Abraca.git
+Vcs-Browser: https://github.com/bitboulder/Abraca
+
+Package: abraca
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: xmms2
+Description: abraca xmms2 client
