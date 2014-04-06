@@ -30,10 +30,6 @@ namespace Abraca {
 		private MetadataResolver resolver;
 
 		private const ActionEntry[] actions = {
-			{ "connect", on_menu_connect },
-			{ "add-url", on_menu_music_add_url },
-			{ "add-files", on_menu_music_add_files },
-			{ "add-directories", on_menu_music_add_directories },
 			{ "playlist-sorting", on_menu_playlist_configure_sorting },
 			{ "playlist-clear", on_menu_playlist_clear },
 			{ "playlist-shuffle", on_menu_playlist_shuffle },
@@ -231,30 +227,6 @@ namespace Abraca {
 			add_accel_group(accel_group);
 
 			return vbox;
-		}
-
-		private void on_menu_connect(GLib.SimpleAction action, GLib.Variant? state)
-		{
-			GLib.Idle.add(() => {
-				var browser = new ServerBrowser(this, _client);
-				browser.run();
-				return false;
-			});
-		}
-
-		private void on_menu_music_add_url(GLib.SimpleAction action, GLib.Variant? state)
-		{
-			Medialib.create_add_url_dialog(this, _client);
-		}
-
-		private void on_menu_music_add_files(GLib.SimpleAction action, GLib.Variant? state)
-		{
-			Medialib.create_add_file_dialog(this, _client, Gtk.FileChooserAction.OPEN);
-		}
-
-		private void on_menu_music_add_directories(GLib.SimpleAction action, GLib.Variant? state)
-		{
-			Medialib.create_add_file_dialog(this, _client, Gtk.FileChooserAction.SELECT_FOLDER);
 		}
 
 		private void on_menu_playlist_configure_sorting(GLib.SimpleAction action, GLib.Variant? state)
