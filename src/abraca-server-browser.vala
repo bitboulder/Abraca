@@ -89,9 +89,21 @@ public class Abraca.ServerBrowser : GLib.Object
 	{
 		discover_network.start();
 		discover_unix.start();
-		dialog.run();
+		GLib.Timeout.add(100, do_run);
+	}
+
+	private bool do_run()
+	{
+		if(location_store.iter_n_children(null)==1){
+			unowned string connection_path;
+			Gtk.TreeIter iter;
+			location_store.get_iter_first(out iter);
+			location_store.get(iter, Column.PATH, out connection_path);
+			client.try_connect(connection_path);
+		}else dialog.run();
 		discover_network.stop();
 		discover_unix.stop();
+		return false;
 	}
 
 	public void on_location_row_activated (Gtk.TreeView view, Gtk.TreePath path, Gtk.TreeViewColumn colunm)
