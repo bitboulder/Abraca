@@ -196,6 +196,7 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 		((FilterModel)treeview.model).replacenadd = replacenadd;
 		entry.text = "";
 		entry.text = text;
+		on_collection_query_timeout();
 	}
 
 }
