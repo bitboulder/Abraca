@@ -311,6 +311,7 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 	{
 		client.xmms.playlist_set_next_rel(1);
 		client.xmms.playback_tickle();
+		if(client.current_playback_status!=Xmms.PlaybackStatus.PLAY) client.xmms.playback_start();
 	}
 
 	private void on_playback_status_change (Client c, int status)
