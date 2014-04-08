@@ -337,9 +337,8 @@ namespace Abraca {
 
 		public void on_menu_replace ()
 		{
-			foreach_selected_row<int>(FilterModel.Column.ID, (pos, mid) => {
-				client.xmms.playlist_add_id (Xmms.ACTIVE_PLAYLIST, mid);
-			});
+			client.xmms.playlist_clear(Xmms.ACTIVE_PLAYLIST);
+			on_menu_add();
 		}
 
 
