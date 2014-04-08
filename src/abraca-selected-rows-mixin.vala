@@ -27,9 +27,23 @@ namespace Abraca {
 				var pos = path.get_indices ()[0];
 
 				model.get_iter(out iter, path);
-				model.get(iter, column, out val);
-
-				func (pos, val);
+				if(model.iter_has_child(iter)){
+					Gtk.TreeIter ich;
+					bool sel=false;
+					model.iter_nth_child(out ich,iter,0);
+					do if(get_selection().iter_is_selected(ich)) sel=true;
+					while(model.iter_next(ref ich));
+					if(!sel){
+						model.iter_nth_child(out ich,iter,0);
+						do{
+							model.get(ich, column, out val);
+							func(pos,val);
+						}while(model.iter_next(ref ich));
+					}
+				}else{
+					model.get(iter, column, out val);
+					func (pos, val);
+				}
 			}
 		}
 	}
