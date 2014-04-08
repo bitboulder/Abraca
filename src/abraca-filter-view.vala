@@ -313,7 +313,7 @@ namespace Abraca {
 		}
 
 
-		private void on_menu_select_album(Gtk.MenuItem item) {
+		public void on_menu_select_album() {
 			((FilterModel)model).select_album(get_selection());
 		}
 
@@ -343,7 +343,7 @@ namespace Abraca {
 		}
 
 
-		private void on_menu_replace (Gtk.MenuItem item)
+		public void on_menu_replace ()
 		{
 			foreach_selected_row<int>(FilterModel.Column.ID, (pos, mid) => {
 				client.xmms.playlist_add_id (Xmms.ACTIVE_PLAYLIST, mid);
@@ -551,7 +551,8 @@ namespace Abraca {
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.MenuItem.with_mnemonic(_("_Replace"));
+			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.REDO, null);
+			item.set_label(_("_Replace"));
 			item.activate.connect(on_menu_replace);
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);

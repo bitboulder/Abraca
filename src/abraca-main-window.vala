@@ -252,6 +252,18 @@ namespace Abraca {
  			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_add);
 
+			btn = create_button(Gtk.STOCK_REDO,_("Replace"),ctool);
+ 			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
+			btn.clicked.connect(CollectionsView.instance.on_menu_collection_replace);
+
+			btn = create_button(Gtk.STOCK_SELECT_ALL,_("Select all"),ftool);
+ 			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_select_all);
+
+			btn = create_button(Gtk.STOCK_SELECT_ALL,_("Select album"),ftool);
+ 			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_select_album);
+
 			btn = create_button(STOCK_ADDALL,_("Add all"),ftool);
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_add_all);
@@ -263,6 +275,10 @@ namespace Abraca {
 			btn = create_button(Gtk.STOCK_ADD,_("Add"),ftool);
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_add);
+
+			btn = create_button(Gtk.STOCK_REDO,_("Replace"),ftool);
+ 			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_replace);
 
 			btn = create_button(Gtk.Stock.GO_FORWARD,_("Jump"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_one_selected.prepend(btn);

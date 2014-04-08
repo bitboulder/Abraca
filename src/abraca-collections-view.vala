@@ -387,6 +387,11 @@ namespace Abraca {
 			on_menu_collection_getadd(true);
 		}
 
+		public void on_menu_collection_replace() {
+			PlaylistView.instance.clear();
+			on_menu_collection_getadd(true);
+		}
+
 		private void on_menu_collection_getadd(bool replacenadd) {
 			Gtk.TreeIter iter;
 
@@ -523,6 +528,12 @@ namespace Abraca {
 
 			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_ADD, null);
 			item.activate.connect(on_menu_collection_add);
+			_collection_menu_item_when_coll_selected.prepend(item);
+			_collection_menu.append(item);
+
+			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_REDO, null);
+			item.set_label(_("Replace"));
+			item.activate.connect(on_menu_collection_replace);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
