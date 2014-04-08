@@ -300,6 +300,7 @@ namespace Abraca {
 			}
 
 			collection_loaded(type);
+			CollectionsView.instance.on_collection_update();
 
 			return true;
 		}

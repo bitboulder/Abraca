@@ -186,6 +186,7 @@ namespace Abraca {
 			btn.relief = Gtk.ReliefStyle.NONE;
 			if(img!="") btn.image = new Gtk.Image.from_stock(img,Gtk.IconSize.SMALL_TOOLBAR);
 			btn.has_tooltip=true;
+			btn.sensitive=false;
 			btn.query_tooltip.connect((w,x,y,mode,tooltip)=>{tooltip.set_text(ttip); return true; });
 			box.pack_start(btn,true,true,0);
 			return btn;
@@ -229,7 +230,27 @@ namespace Abraca {
 			var ptool = new Gtk.HBox(false,0);
 			pbox.pack_start(ptool, false, false, 0);
 
+			var cbox = new Gtk.VBox(false,0);
+			cbox.pack_start(scrolled,true,true,0);
+			var ctool = new Gtk.HBox(false,0);
+			cbox.pack_start(ctool, false, false, 0);
+
+			var collections = new CollectionsView (client, search);
+			scrolled.add (collections);
+
 			Gtk.Button btn;
+
+			btn = create_button(Gtk.Stock.APPLY,_("Activate"),ctool);
+ 			CollectionsView.instance._collection_menu_item_when_pllst_selected.prepend(btn);
+			btn.clicked.connect(CollectionsView.instance.on_menu_collection_activate);
+
+			btn = create_button(Gtk.Stock.FIND,_("Show"),ctool);
+ 			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
+			btn.clicked.connect(CollectionsView.instance.on_menu_collection_get);
+
+			btn = create_button(Gtk.Stock.ADD,_("Add"),ctool);
+ 			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
+			btn.clicked.connect(CollectionsView.instance.on_menu_collection_add);
 
 			btn = create_button(STOCK_ADDALL,_("Add all"),ftool);
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
@@ -263,14 +284,11 @@ namespace Abraca {
 			_right_hpaned.pack1(fbox, true, true);
 			_right_hpaned.pack2(pbox, false, true);
 
-			var collections = new CollectionsView (client, search);
-			scrolled.add (collections);
-
 			_main_hpaned = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
 			_main_hpaned.position = 135;
 			_main_hpaned.position_set = true;
 			_main_hpaned.sensitive = false;
-			_main_hpaned.pack1 (scrolled, false, true);
+			_main_hpaned.pack1 (cbox, false, true);
 			_main_hpaned.pack2 (_right_hpaned, true, true);
 
 			client.connection_state_changed.connect((c, state) => {

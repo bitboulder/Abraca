@@ -22,6 +22,7 @@ using GLib;
 namespace Abraca {
 
 	public class CollectionsView : Gtk.TreeView {
+		public static CollectionsView instance = null;
 
 		/** drag-n-drop targets */
 		private Gtk.TargetEntry[] _target_entries = {
@@ -37,9 +38,9 @@ namespace Abraca {
 		private Gtk.Menu _collection_menu;
 
 		/* sensitivity conditions of _collection_menu-items */
-		private GLib.List<Gtk.MenuItem>
+		public GLib.List<Gtk.Widget>
 			_collection_menu_item_when_coll_selected = null;
-		private GLib.List<Gtk.MenuItem>
+		public GLib.List<Gtk.Widget>
 			_collection_menu_item_when_pllst_selected = null;
 		private GLib.List<Gtk.MenuItem>
 			_collection_menu_item_when_ns_selected = null;
@@ -98,8 +99,14 @@ namespace Abraca {
 
 			key_press_event.connect(on_key_press_event);
 			button_press_event.connect(on_button_press_event);
+
+			instance = this;
 		}
 
+
+		public void on_collection_update() {
+			on_selection_changed_update_menu(get_selection());
+		}
 
 		private void on_selection_changed_update_menu (Gtk.TreeSelection s)
 		{
@@ -356,10 +363,10 @@ namespace Abraca {
 		                               Gtk.TreePath path,
 		                               Gtk.TreeViewColumn column)
 		{
-			on_menu_collection_get(_collection_menu_item_activate);
+			on_menu_collection_get();
 		}
 
-		private void on_menu_collection_activate(Gtk.MenuItem item) {
+		public void on_menu_collection_activate() {
 			Gtk.TreeIter iter;
 			if (get_selection().get_selected(null, out iter)) {
 				Gtk.TreePath path = model.get_path(iter);
@@ -373,11 +380,11 @@ namespace Abraca {
 		}
 
 
-		private void on_menu_collection_get(Gtk.MenuItem item) {
+		public void on_menu_collection_get() {
 			on_menu_collection_getadd(false);
 		}
 
-		private void on_menu_collection_add(Gtk.MenuItem item) {
+		public void on_menu_collection_add() {
 			on_menu_collection_getadd(true);
 		}
 
@@ -517,26 +524,6 @@ namespace Abraca {
 
 			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_ADD, null);
 			item.activate.connect(on_menu_collection_add);
-			_collection_menu_item_when_coll_selected.prepend(item);
-			_collection_menu.append(item);
-
-			item = new Gtk.ImageMenuItem.with_mnemonic(_("_Rename"));
-			item.image = new Gtk.Image.from_stock(
-				Gtk.Stock.EDIT, Gtk.IconSize.MENU
-			);
-			item.activate.connect((menu) => {
-				selected_collection_rename();
-			});
-			_collection_menu_item_when_coll_selected.prepend(item);
-			_collection_menu.append(item);
-
-			item = new Gtk.ImageMenuItem.with_mnemonic(_("Delete"));
-			item.image = new Gtk.Image.from_stock(
-				Gtk.Stock.DELETE, Gtk.IconSize.MENU
-			);
-			item.activate.connect((menu) => {
-				selected_collection_delete();
-			});
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
