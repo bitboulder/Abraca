@@ -35,7 +35,7 @@ public class Abraca.Application : Gtk.Application {
 
 	public Application()
 	{
-		Object(application_id: "org.xmms2.abraca", flags: ApplicationFlags.FLAGS_NONE);
+		Object(application_id: "org.xmms2.abraca", flags: ApplicationFlags.NON_UNIQUE);
 		add_action_entries (actions, this);
 		gdk_window_add_filter (null, on_gdk_event);
 	}
