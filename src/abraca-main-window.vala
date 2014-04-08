@@ -215,24 +215,24 @@ namespace Abraca {
 
 			var medialib = new Medialib (this, client);
 
-			var fbox = new Gtk.VBox(false,0);
+			var fbox = new Gtk.Box(Gtk.Orientation.VERTICAL,0);
 			var filter = new FilterWidget (client, resolver, _config, medialib, accel_group);
 			var search = filter.get_searchable ();
 			fbox.pack_start(filter, true, true, 0);
-			var ftool = new Gtk.HBox(false,0);
+			var ftool = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
 			fbox.pack_start(ftool, false, false, 0);
 
-			var pbox = new Gtk.VBox(false,0);
+			var pbox = new Gtk.Box(Gtk.Orientation.VERTICAL,0);
 			var playlist = new PlaylistWidget (client, resolver, _config, medialib, search);
 			_time_label = new Gtk.Label(_(""));
 			pbox.pack_start(playlist, true, true, 0);
 			pbox.pack_start(_time_label, false, false, 0);
-			var ptool = new Gtk.HBox(false,0);
+			var ptool = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
 			pbox.pack_start(ptool, false, false, 0);
 
-			var cbox = new Gtk.VBox(false,0);
+			var cbox = new Gtk.Box(Gtk.Orientation.VERTICAL,0);
 			cbox.pack_start(scrolled,true,true,0);
-			var ctool = new Gtk.HBox(false,0);
+			var ctool = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
 			cbox.pack_start(ctool, false, false, 0);
 
 			var collections = new CollectionsView (client, search);

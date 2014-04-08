@@ -87,7 +87,7 @@ public class Abraca.MetadataResolver : GLib.Object {
 	}
 
 	private void resolve(int token, int mid)
-		requires(0 <= token < listeners.size)
+		requires(0 <= token && token < listeners.size)
 	{
 		Xmms.Collection? list = pending_mids[token];
 		if (list == null) {
@@ -136,7 +136,7 @@ public class Abraca.MetadataResolver : GLib.Object {
 	}
 
 	private bool on_coll_query_infos(Xmms.Value value)
-		requires(0 <= in_flight_token < listeners.size)
+		requires(0 <= in_flight_token && in_flight_token < listeners.size)
 	{
 		var listener = listeners[in_flight_token];
 

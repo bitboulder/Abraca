@@ -104,8 +104,8 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 
 		var entry = widget as Gtk.Entry;
 		var text = entry.get_text();
-		if(text.size()>0 && !text.contains(":")){
-			for(int i=0;i<text.size();i++) if(text.substring(i,1)==" "){
+		if(text.length>0 && !text.contains(":")){
+			for(int i=0;i<text.length;i++) if(text.substring(i,1)==" "){
 				text = text.substring(0,i) + "\\" + text.substring(i);
 				i++;
 			}	
@@ -120,7 +120,7 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 				if (_timer == 0) {
 					_timer = GLib.Timeout.add(450, on_collection_query_timeout);
 				}
-				if(text.size()>3  && text.substring(0,3)=="in:"){
+				if(text.length>3  && text.substring(0,3)=="in:"){
 					color=Gdk.RGBA();
 					color.parse("#ffff66");
 				}
@@ -157,7 +157,7 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 		_pending_queries.offer(_current_query);
 
 		string native_sort_pl="";
-		if(filter_native_sort && _current_query.size()>=13 &&
+		if(filter_native_sort && _current_query.length>=13 &&
 				_current_query.substring(0,13)=="in:Playlists/")
 			native_sort_pl = _current_query.substring(13);
 		treeview.query_collection_ex(coll, native_sort_pl, (val) => {
