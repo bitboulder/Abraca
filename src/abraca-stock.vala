@@ -21,7 +21,6 @@ namespace Abraca {
 	public const string STOCK_EQUALIZER  = "abraca-equalizer";
 	public const string STOCK_COLLECTION = "abraca-collection";
 	public const string STOCK_PLAYLIST   = "abraca-playlist";
-	public const string STOCK_ADDCOLL    = "abraca-addcollection";
 	public const string STOCK_ADDALL     = "abraca-addall";
 	public const string STOCK_RATED      = "abraca-rated";
 	public const string STOCK_UNRATED    = "abraca-unrated";
@@ -73,22 +72,6 @@ namespace Abraca {
 		set.add_source(source);
 
 		factory.add(STOCK_PLAYLIST, set);
-
-		/* Add collection icon */
-
-		set = new Gtk.IconSet();
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-addcollection-24.png"));
-		set.add_source(source);
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-addcollection-16.png"));
-		source.set_size(Gtk.IconSize.MENU);
-		source.set_size_wildcarded(false);
-		set.add_source(source);
-
-		factory.add(STOCK_ADDCOLL, set);
 
 		/* Add collection icon */
 

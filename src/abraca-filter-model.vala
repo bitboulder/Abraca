@@ -204,63 +204,7 @@ namespace Abraca {
 				}
 			}
 
-			select_album_finalize();
 			return false;
-		}
-
-		public delegate void AddFunc ();
-		private Gtk.TreeSelection _select_album_selection = null;
-		private AddFunc _select_album_addfunc = null;
-		private int _select_album_num = 0;
-		public void select_album(Gtk.TreeSelection selection,AddFunc? addfunc=null) {
-			Gtk.TreeIter iter;
-			_select_album_selection = selection;
-			_select_album_addfunc = addfunc;
-			_select_album_num = 1;
-			get_iter_first(out iter);
-			do{
-				GLib.Value status;
-				base.get_value(iter,Column.STATUS,out status);
-				if(((Status)status.get_int())==Status.RESOLVED) continue;
-				_select_album_num++;
-				get_value(iter,Column.STATUS,out status);
-			}while(iter_next(ref iter));
-			select_album_finalize();
-		}
-
-		private void select_album_finalize() {
-			GLib.List<Gtk.TreePath> list;
-			unowned Gtk.TreeModel mod;
-			int palb;
-			if(  _select_album_num == 0) return;
-			if(--_select_album_num != 0) return;
-			if(_select_album_selection == null) return;
-			palb = get_alb_pos();
-			list = _select_album_selection.get_selected_rows(out mod);
-			foreach (var path in list) {
-				Gtk.TreeIter iter;
-				string albref;
-				get_iter(out iter, path);
-				get(iter, palb, out albref);
-				get_iter_first(out iter);
-				do{
-					string albcmp;
-					get(iter, palb, out albcmp);
-					if(albref==albcmp) _select_album_selection.select_iter(iter);
-				}while(iter_next(ref iter));
-			}
-			if(_select_album_addfunc!=null)
-				_select_album_addfunc();
-		}
-
-		private int get_alb_pos() {
-			int pos = 2;
-			int palb = -1;
-			foreach (unowned string key in dynamic_columns) {
-				if(key == "album"){ palb=pos; break; }
-				pos++;
-			}
-			return palb;
 		}
 	}
 }

@@ -261,17 +261,9 @@ namespace Abraca {
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_select_all);
 
-			btn = create_button(Gtk.STOCK_SELECT_ALL,_("Select album"),ftool);
- 			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
-			btn.clicked.connect(FilterView.instance.on_menu_select_album);
-
 			btn = create_button(STOCK_ADDALL,_("Add all"),ftool);
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_add_all);
-
-			btn = create_button(STOCK_ADDCOLL,_("Add album"),ftool);
- 			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
-			btn.clicked.connect(FilterView.instance.on_menu_add_album);
 
 			btn = create_button(Gtk.STOCK_ADD,_("Add"),ftool);
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);

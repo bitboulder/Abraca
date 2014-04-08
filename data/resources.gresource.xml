@@ -11,8 +11,6 @@
     <file preprocess="to-pixdata" compressed="true">abraca-favorite.png</file>
     <file preprocess="to-pixdata" compressed="true">abraca-playlist-16.png</file>
     <file preprocess="to-pixdata" compressed="true">abraca-playlist-24.png</file>
-    <file preprocess="to-pixdata" compressed="true">abraca-addcollection-24.png</file>
-    <file preprocess="to-pixdata" compressed="true">abraca-addcollection-16.png</file>
     <file preprocess="to-pixdata" compressed="true">abraca-addall-24.png</file>
     <file preprocess="to-pixdata" compressed="true">abraca-addall-16.png</file>
     <file preprocess="to-pixdata" compressed="true">abraca-rating-rated.png</file>

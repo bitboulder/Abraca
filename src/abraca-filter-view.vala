@@ -313,11 +313,6 @@ namespace Abraca {
 		}
 
 
-		public void on_menu_select_album() {
-			((FilterModel)model).select_album(get_selection());
-		}
-
-
 		private void on_menu_info (Gtk.MenuItem item)
 		{
 			foreach_selected_row<uint>(FilterModel.Column.ID, (idx, mid) => {
@@ -331,9 +326,6 @@ namespace Abraca {
 			on_menu_add();
 		}
 
-		public void on_menu_add_album() {
-			((FilterModel)model).select_album(get_selection(),on_menu_add);
-		}
 
 		public void on_menu_add ()
 		{
@@ -515,12 +507,6 @@ namespace Abraca {
 			filter_menu_item_when_not_empty.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_SELECT_ALL, null);
-			item.set_label(_("Select album"));
-			item.activate.connect(on_menu_select_album);
-			filter_menu_item_when_some_selected.prepend(item);
-			filter_menu.append(item);
-
 			item = new Gtk.SeparatorMenuItem();
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
@@ -538,12 +524,6 @@ namespace Abraca {
 			item.set_label(_("_Add all"));
 			item.activate.connect(on_menu_add_all);
 			filter_menu_item_when_not_empty.prepend(item);
-			filter_menu.append(item);
-
-			item = new Gtk.ImageMenuItem.from_stock(STOCK_ADDCOLL, null);
-			item.set_label(_("Add album"));
-			item.activate.connect(on_menu_add_album);
-			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 
 			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.ADD, null);
