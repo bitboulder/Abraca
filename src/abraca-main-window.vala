@@ -180,6 +180,17 @@ namespace Abraca {
 			file.set_integer("panes", "pos2", _right_hpaned.position);
 		}
 
+		private Gtk.Button create_button(string img,string ttip,Gtk.Box box)
+		{
+			var btn = new Gtk.Button();
+			btn.relief = Gtk.ReliefStyle.NONE;
+			if(img!="") btn.image = new Gtk.Image.from_stock(img,Gtk.IconSize.SMALL_TOOLBAR);
+			btn.has_tooltip=true;
+			btn.query_tooltip.connect((w,x,y,mode,tooltip)=>{tooltip.set_text(ttip); return true; });
+			box.pack_start(btn,true,true,0);
+			return btn;
+		}
+
 		private Gtk.Widget create_widgets (Client client)
 		{
 			_config = new Config ();
@@ -203,16 +214,53 @@ namespace Abraca {
 
 			var medialib = new Medialib (this, client);
 
+			var fbox = new Gtk.VBox(false,0);
 			var filter = new FilterWidget (client, resolver, _config, medialib, accel_group);
 			var search = filter.get_searchable ();
+			fbox.pack_start(filter, true, true, 0);
+			var ftool = new Gtk.HBox(false,0);
+			fbox.pack_start(ftool, false, false, 0);
 
+			var pbox = new Gtk.VBox(false,0);
 			var playlist = new PlaylistWidget (client, resolver, _config, medialib, search);
 			_time_label = new Gtk.Label(_(""));
-			var pbox = new Gtk.VBox(false,0);
 			pbox.pack_start(playlist, true, true, 0);
 			pbox.pack_start(_time_label, false, false, 0);
+			var ptool = new Gtk.HBox(false,0);
+			pbox.pack_start(ptool, false, false, 0);
 
-			_right_hpaned.pack1(filter, true, true);
+			Gtk.Button btn;
+
+			btn = create_button(STOCK_ADDALL,_("Add all"),ftool);
+ 			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_add_all);
+
+			btn = create_button(STOCK_ADDCOLL,_("Add album"),ftool);
+ 			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_add_album);
+
+			btn = create_button(Gtk.STOCK_ADD,_("Add"),ftool);
+ 			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_add);
+
+			btn = create_button(Gtk.Stock.GO_FORWARD,_("Jump"),ptool);
+ 			PlaylistView.instance._playlist_menu_item_when_one_selected.prepend(btn);
+			btn.clicked.connect(PlaylistView.instance.jump_to_selected);
+
+			btn = create_button("",_("Shuffle"),ptool);
+			btn.image = new Gtk.Image.from_icon_name("stock_shuffle",Gtk.IconSize.SMALL_TOOLBAR);
+ 			PlaylistView.instance._playlist_menu_item_when_not_empty.prepend(btn);
+			btn.clicked.connect(PlaylistView.instance.shuffle);
+
+			btn = create_button(Gtk.Stock.DELETE,_("Delete"),ptool);
+ 			PlaylistView.instance._playlist_menu_item_when_some_selected.prepend(btn);
+			btn.clicked.connect(PlaylistView.instance.delete_selected);
+
+			btn = create_button(Gtk.Stock.CLEAR,_("Clear"),ptool);
+ 			PlaylistView.instance._playlist_menu_item_when_not_empty.prepend(btn);
+			btn.clicked.connect(PlaylistView.instance.clear);
+
+			_right_hpaned.pack1(fbox, true, true);
 			_right_hpaned.pack2(pbox, false, true);
 
 			var collections = new CollectionsView (client, search);

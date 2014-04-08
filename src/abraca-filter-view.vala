@@ -21,6 +21,8 @@ using GLib;
 
 namespace Abraca {
 	public class FilterView : Abraca.TreeView, IConfigurable {
+		public static FilterView instance;
+
 		/* field and order used for sorting, see sorting property */
 		public struct Sorting {
 			public unowned string field;
@@ -37,11 +39,11 @@ namespace Abraca {
 		/* sensitivity conditions of filter_menu-items */
 		private GLib.List<Gtk.MenuItem>
 			filter_menu_item_when_one_selected = null;
-		private GLib.List<Gtk.MenuItem>
+		public GLib.List<Gtk.Widget>
 			filter_menu_item_when_some_selected = null;
 		private GLib.List<Gtk.MenuItem>
 			filter_menu_item_when_none_selected = null;
-		private GLib.List<Gtk.MenuItem>
+		public GLib.List<Gtk.Widget>
 			filter_menu_item_when_not_empty = null;
 
 		/** allowed drag-n-drop variants */
@@ -83,6 +85,8 @@ namespace Abraca {
 			notify["sorting"].connect(on_sorting_changed);
 
 			Configurable.register(this);
+
+			instance = this;
 		}
 
 
@@ -303,7 +307,7 @@ namespace Abraca {
 		}
 
 
-		private void on_menu_select_all (Gtk.MenuItem item)
+		public void on_menu_select_all ()
 		{
 			get_selection().select_all();
 		}
@@ -322,16 +326,16 @@ namespace Abraca {
 		}
 
 
-		private void on_menu_add_all(Gtk.MenuItem item) {
-			on_menu_select_all(item);
+		public void on_menu_add_all() {
+			on_menu_select_all();
 			on_menu_add();
 		}
 
-		private void on_menu_add_album(Gtk.MenuItem item) {
+		public void on_menu_add_album() {
 			((FilterModel)model).select_album(get_selection(),on_menu_add);
 		}
 
-		private void on_menu_add ()
+		public void on_menu_add ()
 		{
 			foreach_selected_row<int>(FilterModel.Column.ID, (pos, mid) => {
 				client.xmms.playlist_add_id (Xmms.ACTIVE_PLAYLIST, mid);

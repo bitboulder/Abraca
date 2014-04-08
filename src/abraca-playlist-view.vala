@@ -21,16 +21,19 @@ using GLib;
 
 namespace Abraca {
 	public class PlaylistView : Abraca.TreeView {
+		public static PlaylistView instance;
 		/** context menu */
 		private Gtk.Menu _playlist_menu;
 
 		/* sensitivity conditions of _playlist_menu-items */
-		private GLib.List<Gtk.MenuItem>
+		public GLib.List<Gtk.Widget>
 			_playlist_menu_item_when_one_selected = null;
-		private GLib.List<Gtk.MenuItem>
+		public GLib.List<Gtk.Widget>
 			_playlist_menu_item_when_some_selected = null;
 		private GLib.List<Gtk.MenuItem>
 			_playlist_menu_item_when_none_selected = null;
+		public GLib.List<Gtk.Widget>
+			_playlist_menu_item_when_not_empty = null;
 
 		/** drag-n-drop targets */
 		private Gtk.TargetEntry[] _target_entries = {
@@ -89,12 +92,18 @@ namespace Abraca {
 			_sort.list_append (new Xmms.Value.from_string("tracknr"));
 
 			show_all();
+			instance = this;
 		}
 
+
+		public void on_playlist_update() {
+			on_selection_changed_update_menu(get_selection());
+		}
 
 		private void on_selection_changed_update_menu(Gtk.TreeSelection s)
 		{
 			int n = s.count_selected_rows();
+			int len = model!=null ? model.iter_n_children(null) : 0;
 
 			foreach (var i in _playlist_menu_item_when_none_selected) {
 				i.sensitive = (n == 0);
@@ -106,6 +115,10 @@ namespace Abraca {
 
 			foreach (var i in _playlist_menu_item_when_some_selected) {
 				i.sensitive = (n > 0);
+			}
+
+			foreach (var i in _playlist_menu_item_when_not_empty) {
+				i.sensitive = len > 0;
 			}
 		}
 
@@ -141,7 +154,7 @@ namespace Abraca {
 		}
 
 
-		private void delete_selected()
+		public void delete_selected()
 		{
 			var entries = new Gee.LinkedList<uint>();
 
@@ -155,6 +168,14 @@ namespace Abraca {
 		}
 
 
+		public void shuffle() {
+			client.xmms.playlist_shuffle(Xmms.ACTIVE_PLAYLIST);
+		}
+
+		public void clear() {
+			client.xmms.playlist_clear(Xmms.ACTIVE_PLAYLIST);
+		}
+  
 		private bool on_key_press_event(Gtk.Widget w, Gdk.EventKey e)
 		{
 			if (e.keyval != Gdk.keyval_from_name("Delete") && e.keyval != Gdk.keyval_from_name("BackSpace"))
@@ -222,10 +243,11 @@ namespace Abraca {
 			_playlist_menu = new Gtk.Menu();
 
 			/* Jump */
-			item = new Gtk.MenuItem.with_label(_("Jump"));
-			item.activate.connect(jump_to_selected);
-			_playlist_menu_item_when_one_selected.prepend(item);
-			_playlist_menu.append(item);
+			img_item = new Gtk.ImageMenuItem.with_label(_("Jump"));
+			img_item.set_image(new Gtk.Image.from_stock(Gtk.STOCK_GO_FORWARD,Gtk.IconSize.MENU));
+			img_item.activate.connect(jump_to_selected);
+			_playlist_menu_item_when_one_selected.prepend(img_item);
+			_playlist_menu.append(img_item);
 
 			/* Separator */
 			item = new Gtk.SeparatorMenuItem();
@@ -324,22 +346,22 @@ namespace Abraca {
 			img_item = new Gtk.ImageMenuItem.with_label(_("Sort"));
 			img_item.set_image(img);
 			img_item.set_submenu(submenu);
+			_playlist_menu_item_when_not_empty.prepend(img_item);
 			_playlist_menu.append(img_item);
 
 			/* Shuffle */
-			item = new Gtk.MenuItem.with_label(_("Shuffle"));
-			item.activate.connect(i => {
-				client.xmms.playlist_shuffle(Xmms.ACTIVE_PLAYLIST);
-			});
-			_playlist_menu.append(item);
+			img_item = new Gtk.ImageMenuItem.with_label(_("Shuffle"));
+			img_item.set_image(new Gtk.Image.from_icon_name("stock_shuffle",Gtk.IconSize.MENU));
+			img_item.activate.connect(shuffle);
+			_playlist_menu_item_when_not_empty.prepend(img_item);
+			_playlist_menu.append(img_item);
 
 			/* Clear */
 			img_item = new Gtk.ImageMenuItem.from_stock(
 				Gtk.Stock.CLEAR, null
 			);
-			img_item.activate.connect(i => {
-				client.xmms.playlist_clear(Xmms.ACTIVE_PLAYLIST);
-			});
+			img_item.activate.connect(clear);
+			_playlist_menu_item_when_not_empty.prepend(img_item);
 			_playlist_menu.append(img_item);
 
 			_playlist_menu.show_all();
@@ -601,7 +623,7 @@ namespace Abraca {
 		}
 
 
-		private void jump_to_selected(Gtk.MenuItem tree)
+		public void jump_to_selected()
 		{
 			jump_to_pos(get_selection().get_selected_rows(null).first().data
 			            .get_indices()[0]);

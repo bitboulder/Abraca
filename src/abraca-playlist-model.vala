@@ -141,6 +141,7 @@ namespace Abraca {
 			}
 
 			on_playtime_update();
+			PlaylistView.instance.on_playlist_update();
 		}
 
 
@@ -245,6 +246,7 @@ namespace Abraca {
 			set(iter, Column.STATUS, Status.UNRESOLVED, Column.ID, mid, Column.INFO, "\n");
 
 			playlist_map.add_iter((int) mid, iter);
+			PlaylistView.instance.on_playlist_update();
 		}
 
 
@@ -287,6 +289,7 @@ namespace Abraca {
 			set(iter, Column.STATUS, Status.UNRESOLVED, Column.ID, mid, Column.INFO, "\n");
 
 			playlist_map.add_iter((int) mid, iter);
+			PlaylistView.instance.on_playlist_update();
 		}
 
 
@@ -334,6 +337,7 @@ namespace Abraca {
 			set_model(ore);
 			*/
 
+			PlaylistView.instance.on_playlist_update();
 			return true;
 		}
 
