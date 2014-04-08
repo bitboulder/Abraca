@@ -20,7 +20,7 @@
 using GLib;
 
 namespace Abraca {
-	public class FilterModel : Gtk.ListStore, Gtk.TreeModel {
+	public class FilterModel : Gtk.TreeStore, Gtk.TreeModel {
 		/* Metadata resolve status */
 
 		enum Status {
@@ -38,11 +38,12 @@ namespace Abraca {
 		public string[] dynamic_columns;
 
 		/* Map medialib id to row */
-		private Gee.Map<int,Gtk.TreeRowReference> pos_map = new Gee.HashMap<int,Gtk.TreeRowReference>();
+		private Gee.HashMap<int,bool> add_map = new Gee.HashMap<int,bool>();
 
 		private Client client;
 		private MetadataRequestor requestor;
 		public bool replacenadd;
+		private bool iscoll;
 
 		public FilterModel (Client c, MetadataResolver resolver, owned string[] props)
 		{
@@ -65,10 +66,6 @@ namespace Abraca {
 			requestor = resolver.register(on_resolver_complete);
 			requestor.set_attributes(dynamic_columns);
 
-			client.medialib_entry_changed.connect((client, res) => {
-					on_medialib_info(res);
-			});
-
 			replacenadd = false;
 		}
 
@@ -79,15 +76,10 @@ namespace Abraca {
 		 */
 		public bool replace_content (Xmms.Value val)
 		{
-			Gtk.TreeIter? iter, sibling = null;
-			bool is_first = !get_iter_first(out iter);
-
 			clear();
+			add_map.clear();
 
-			pos_map.clear();
-
-
-			bool iscoll=val.is_type(Xmms.ValueType.COLL);
+			iscoll=val.is_type(Xmms.ValueType.COLL);
 			uint n=0;
 			int i=0;
 			Xmms.Collection coll = null;
@@ -101,8 +93,6 @@ namespace Abraca {
  			}
 
 			while (iscoll ? i<n : list_iter.valid()) {
-				Gtk.TreeRowReference row;
-				Gtk.TreePath path;
 				Xmms.Value entry;
 				int id = 0;
 
@@ -112,21 +102,9 @@ namespace Abraca {
 					if (!(list_iter.entry(out entry) && entry.get_int(out id))) continue;
 				}
 
-				if (is_first) {
-					insert_after(out iter, null);
-					is_first = !is_first;
-				} else {
-					insert_after(out iter, sibling);
-				}
-
-				set(iter, Column.ID, id, Column.STATUS, Status.UNRESOLVED);
-
-				sibling = iter;
-
-				path = get_path(iter);
-				row = new Gtk.TreeRowReference(this, path);
-
-				pos_map.set((int) id, row);
+				add_map.set(id,true);
+				stdout.printf("HALLO req id %i\n",id);
+				client.xmms.medialib_get_info(id).notifier_set(on_medialib_info);
 
 				if(replacenadd) client.xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST, id);
 
@@ -135,29 +113,6 @@ namespace Abraca {
 			replacenadd = false;
 
 			return true;
-		}
-
-
-		/**
-		 * When GTK asks for the value of a column, check if the row
-		 * has been resolved or not, otherwise resolve it.
-		 */
-		public void get_value (Gtk.TreeIter iter, int column, out GLib.Value val)
-		{
-			GLib.Value tmp1;
-
-			base.get_value(iter, Column.STATUS, out tmp1);
-			if (((Status)tmp1.get_int()) == Status.UNRESOLVED) {
-				GLib.Value tmp2;
-
-				base.get_value(iter, Column.ID, out tmp2);
-
-				set(iter, Column.STATUS, Status.RESOLVING);
-
-				requestor.resolve((int) tmp2.get_uint());
-			}
-
-			base.get_value(iter, column, out val);
 		}
 
 
@@ -179,32 +134,64 @@ namespace Abraca {
 
 		private bool on_medialib_info (Xmms.Value val)
 		{
-			Gtk.TreeRowReference row;
-			Gtk.TreePath path;
 			Gtk.TreeIter iter;
+			Gtk.TreeIter? ialb=null;
 			int mid;
 
 			val.dict_entry_get_int("id", out mid);
+			stdout.printf("HALLO got id %i\n",mid);
+			if(!add_map.get(mid)) return false;
 
-			row = pos_map.get(mid);
-			if (row == null || !row.valid()) {
-				return false;
-			}
-
-			path = row.get_path();
-
-			if (get_iter(out iter, path)) {
-				set(iter, Column.STATUS, Status.RESOLVED);
-
-				int pos = 2;
-				foreach (unowned string key in dynamic_columns) {
-					string formatted = "";
-					Transform.normalize_dict (val, key, out formatted);
-					set(iter, pos++, formatted);
+			if(!iscoll){
+				string alb="", art="";
+				Transform.normalize_dict (val, "album", out alb);
+				Transform.normalize_dict (val, "artist", out art);
+				int palb=get_col_pos("album");
+				int part=get_col_pos("artist");
+				string ialbtxt="";
+				if(get_iter_first(out ialb)){
+					set(ialb, Column.ID, -1);
+					get(ialb,palb,out ialbtxt);
+					while(ialbtxt!=alb && iter_next(ref ialb))
+						get(ialb,palb,out ialbtxt);
 				}
-			}
-
-			return false;
-		}
-	}
+				if(ialbtxt!=alb){
+					append(out ialb,null);
+					set(ialb, palb, alb);
+					set(ialb, part, art);
+				}else{
+					string ialbart;
+					get(ialb, part, out ialbart);
+					if(ialbart!=art) set(ialb,part,"");
+				}
+				set(ialb,get_col_pos("title"),"[%i]".printf(iter_n_children(ialb)+1));
+  			}
+  
+			append(out iter,ialb);
+  
+			set(iter, Column.ID, mid);
+			set(iter, Column.STATUS, Status.RESOLVED);
+  
+			int pos = 2;
+			foreach (unowned string key in dynamic_columns) {
+				string formatted = "";
+				Transform.normalize_dict (val, key, out formatted);
+				set(iter, pos++, formatted);
+  			}
+  
+			if(iter_n_children(null)==1) FilterView.instance.expand_all(); else FilterView.instance.collapse_all();
+  			return false;
+  		}
+  
+		private int get_col_pos(string name) {
+  			int pos = 2;
+			int p = -1;
+  			foreach (unowned string key in dynamic_columns) {
+				if(key == name){ p=pos; break; }
+  				pos++;
+  			}
+			return p;
+  		}
+  	}
 }
+
