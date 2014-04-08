@@ -72,9 +72,6 @@
                 <property name="image">playback-img-prev</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="abraca_tool_bar_on_media_prev" swapped="yes"/>
-                <style>
-                  <class name="fading-button"/>
-                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -94,9 +91,6 @@
                 <property name="image">playback-img-play</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="abraca_tool_bar_on_media_play" swapped="yes"/>
-                <style>
-                  <class name="fading-button"/>
-                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -116,9 +110,6 @@
                 <property name="image">playback-img-next</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="abraca_tool_bar_on_media_next" swapped="yes"/>
-                <style>
-                  <class name="fading-button"/>
-                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -165,9 +156,6 @@
                     <property name="image">equalizer-img</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="abraca_tool_bar_on_equalizer_show" swapped="yes"/>
-                    <style>
-                      <class name="fading-button"/>
-                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -187,9 +175,6 @@
                     <property name="focus_on_click">False</property>
                     <property name="always_show_image">True</property>
                     <property name="relief">normal</property>
-                    <style>
-                      <class name="fading-button"/>
-                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
