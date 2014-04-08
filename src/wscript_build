@@ -41,14 +41,15 @@ sources = """
     abraca-treerow-map.vala
     abraca-treeview.vala
     abraca-volume-button.vala
+    abraca-cat-view.vala
 """.split()
 
 bld.program(
     features     = 'c cprogram',
     target       = 'abraca',
     use          = 'subzero resources',
-    packages     = 'gtk+-3.0 gio-unix-2.0 gee-1.0 xmms2-client-glib subzero posix gdk-add-filter build-config',
-    uselib       = 'GTK+-3.0 GMODULE-2.0 GIO-2.0 GEE-1.0 XMMS2-CLIENT XMMS2-CLIENT-GLIB math',
+    packages     = 'gtk+-3.0 gio-unix-2.0 gee-1.0 xmms2-client-glib subzero posix gdk-add-filter build-config sqlite3',
+    uselib       = 'GTK+-3.0 GMODULE-2.0 GIO-2.0 GEE-1.0 XMMS2-CLIENT XMMS2-CLIENT-GLIB math SQLITE3',
     source       = sources,
     vapi_dirs    = '../vapi ../external',
     vala_defines = bld.env.VALADEFINES,

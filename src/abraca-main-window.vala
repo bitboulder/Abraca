@@ -232,6 +232,7 @@ namespace Abraca {
 
 			var cbox = new Gtk.Box(Gtk.Orientation.VERTICAL,0);
 			cbox.pack_start(scrolled,true,true,0);
+			cbox.pack_start(new CatView(client,search),false,false,0);
 			var ctool = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
 			cbox.pack_start(ctool, false, false, 0);
 
