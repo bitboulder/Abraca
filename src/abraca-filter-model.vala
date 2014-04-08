@@ -103,8 +103,7 @@ namespace Abraca {
 				}
 
 				add_map.set(id,true);
-				stdout.printf("HALLO req id %i\n",id);
-				client.xmms.medialib_get_info(id).notifier_set(on_medialib_info);
+				requestor.resolve((int) id);
 
 				if(replacenadd) client.xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST, id);
 
@@ -139,7 +138,6 @@ namespace Abraca {
 			int mid;
 
 			val.dict_entry_get_int("id", out mid);
-			stdout.printf("HALLO got id %i\n",mid);
 			if(!add_map.get(mid)) return false;
 
 			if(!iscoll){
