@@ -118,7 +118,7 @@ public class Abraca.Application : Gtk.Application {
 
 			GLib.Idle.add(() => {
 				var sb = new ServerBrowser(window, client);
-				sb.run();
+				sb.run(local);
 				return false;
 			});
 		} catch (GLib.Error e) {
@@ -133,12 +133,19 @@ public class Abraca.Application : Gtk.Application {
 		base.shutdown();
 	}
 
+	private static bool local = false;
+	private const GLib.OptionEntry[] options = {
+		{ "local",'l',0,OptionArg.NONE,ref local,"Start/use local xmms2 server",null },
+		{ null }
+	};
+
 	public static int main (string[] args)
 	{
 		var context = new OptionContext (_("- Abraca, an XMMS2 client."));
 		context.add_group (Gtk.get_option_group (false));
 
 		try {
+			context.add_main_entries(options,null);
 			context.parse (ref args);
 		} catch (GLib.OptionError err) {
 			var help = context.get_help (true, null);

@@ -85,25 +85,39 @@ public class Abraca.ServerBrowser : GLib.Object
 		}
 	}
 
-	public void run ()
+	public void run (bool local)
 	{
 		discover_network.start();
 		discover_unix.start();
-		GLib.Timeout.add(100, do_run);
+		if(local) GLib.Timeout.add(100,dolocal); else {
+			dialog.run();
+			discover_network.stop();
+			discover_unix.stop();
+		}
 	}
 
-	private bool do_run()
+	private int localrep=0;
+	private bool dolocal()
 	{
-		if(location_store.iter_n_children(null)==1){
+		discover_network.stop();
+		discover_unix.stop();
+		if(location_store.iter_n_children(null)>0){
 			unowned string connection_path;
 			Gtk.TreeIter iter;
 			location_store.get_iter_first(out iter);
 			location_store.get(iter, Column.PATH, out connection_path);
 			client.try_connect(connection_path);
-		}else dialog.run();
-		discover_network.stop();
-		discover_unix.stop();
-		return false;
+			return false;
+		}
+		if(localrep==0) on_launch_activated();
+		if(localrep>50){
+			run(false);
+			return false;
+		}
+		discover_network.start();
+		discover_unix.start();
+		localrep++;
+		return true;
 	}
 
 	public void on_location_row_activated (Gtk.TreeView view, Gtk.TreePath path, Gtk.TreeViewColumn colunm)
@@ -251,7 +265,13 @@ public class Abraca.ServerBrowser : GLib.Object
 
 	public void on_launch_activated ()
 	{
-		GLib.warning ("launch");
+		string stdout, stderr;
+
+		try {
+			GLib.Process.spawn_command_line_sync("xmms2-launcher", out stdout, out stderr, null);
+		} catch (SpawnError e) {
+			GLib.warning("Unable to spawn 'xmms2-launcher' (%s)", e.message);
+		}
 	}
 
 	private void on_service_added(string name, string path)
