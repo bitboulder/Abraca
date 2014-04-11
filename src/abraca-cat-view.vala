@@ -118,7 +118,7 @@ namespace Abraca {
 				pat=patnew;
 				pre+="_";
 			}
-			search.search(pat,false);
+			search.search(pat);
 			update_num();
 		}
 

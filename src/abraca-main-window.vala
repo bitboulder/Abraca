@@ -257,6 +257,10 @@ namespace Abraca {
  			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_replace);
 
+			btn = create_button(Gtk.STOCK_REFRESH,_("Mixin"),ctool);
+ 			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
+			btn.clicked.connect(CollectionsView.instance.on_menu_collection_mixin);
+
 			btn = create_button(Gtk.STOCK_SELECT_ALL,_("Select all"),ftool);
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_select_all);
@@ -272,6 +276,10 @@ namespace Abraca {
 			btn = create_button(Gtk.STOCK_REDO,_("Replace"),ftool);
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_replace);
+
+			btn = create_button(Gtk.STOCK_REFRESH,_("Mixin"),ftool);
+ 			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
+			btn.clicked.connect(FilterView.instance.on_menu_mixin);
 
 			btn = create_button(Gtk.Stock.GO_FORWARD,_("Jump"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_one_selected.prepend(btn);

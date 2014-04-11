@@ -28,6 +28,9 @@ namespace Abraca {
 
 		private int _current_id;
 
+		private int mixpos=1;
+		private int64 mixlast=0;
+
 		public enum ConnectionState
 		{
 			Disconnected,
@@ -371,9 +374,12 @@ namespace Abraca {
 					playlist_insert(playlist, mid, pos);
 					break;
 				case Xmms.PlaylistChange.REMOVE:
+					if(pos<mixpos) mixpos--;
 					playlist_remove(playlist, pos);
 					break;
 				case Xmms.PlaylistChange.MOVE:
+					if(pos<mixpos) mixpos--;
+					if(npos<=mixpos) mixpos++;
 					playlist_move(playlist, pos, npos);
 					break;
 				case Xmms.PlaylistChange.UPDATE:
@@ -383,6 +389,7 @@ namespace Abraca {
 				case Xmms.PlaylistChange.SHUFFLE:
 				case Xmms.PlaylistChange.SORT:
 				default:
+					mixlast=0;
 					xmms.playlist_current_active().notifier_set(
 						on_playlist_loaded
 					);
@@ -536,6 +543,21 @@ namespace Abraca {
 		private bool on_configval_changed(Xmms.Value val) {
 			val.dict_foreach(on_configval_changed_foreach);
 			return true;
+		}
+
+		public void playlist_add_id(int id,bool mix=false){
+			if(!mix) {
+				mixlast=0;
+				xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST,id);
+			} else {
+				int64 now=GLib.get_monotonic_time();
+				int plen=1000000; // TODO: get playlist length
+				if(now-mixlast>5e6) mixpos=1;
+				mixlast=now;
+				if(mixpos>=plen) xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST,id);
+				else xmms.playlist_insert_id(Xmms.ACTIVE_PLAYLIST,mixpos,id);
+				mixpos+=2;
+			}
 		}
 	}
 }

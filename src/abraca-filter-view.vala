@@ -327,18 +327,28 @@ namespace Abraca {
 		}
 
 
-		public void on_menu_add ()
+		public void on_menu_addmix (bool mix = false)
 		{
 			foreach_selected_row<int>(FilterModel.Column.ID, (pos, mid) => {
-				client.xmms.playlist_add_id (Xmms.ACTIVE_PLAYLIST, mid);
+				client.playlist_add_id (mid,mix);
 			});
 		}
 
 
+		public void on_menu_add ()
+		{
+			on_menu_addmix();
+		}
+
 		public void on_menu_replace ()
 		{
 			client.xmms.playlist_clear(Xmms.ACTIVE_PLAYLIST);
-			on_menu_add();
+			on_menu_addmix();
+		}
+
+		public void on_menu_mixin ()
+		{
+			on_menu_addmix(true);
 		}
 
 
@@ -533,6 +543,12 @@ namespace Abraca {
 			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.REDO, null);
 			item.set_label(_("_Replace"));
 			item.activate.connect(on_menu_replace);
+			filter_menu_item_when_some_selected.prepend(item);
+			filter_menu.append(item);
+
+			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.REFRESH, null);
+			item.set_label(_("_Mixin"));
+			item.activate.connect(on_menu_mixin);
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 

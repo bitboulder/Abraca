@@ -19,7 +19,7 @@
 
 /* TODO: This is a hack.. fix me... */
 public interface Abraca.Searchable : GLib.Object {
-	public abstract void search (string query,bool replacenadd = false);
+	public abstract void search (string query,int replacenadd = 0);
 }
 
 public class Abraca.FilterWidget : Gtk.Paned {

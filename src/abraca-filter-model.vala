@@ -42,7 +42,7 @@ namespace Abraca {
 
 		private Client client;
 		private MetadataRequestor requestor;
-		public bool replacenadd;
+		public int replacenadd;
 		private bool iscoll;
 
 		public FilterModel (Client c, MetadataResolver resolver, owned string[] props)
@@ -66,7 +66,7 @@ namespace Abraca {
 			requestor = resolver.register(on_resolver_complete);
 			requestor.set_attributes(dynamic_columns);
 
-			replacenadd = false;
+			replacenadd = 0;
 		}
 
 
@@ -105,11 +105,11 @@ namespace Abraca {
 				add_map.set(id,true);
 				requestor.resolve((int) id);
 
-				if(replacenadd) client.xmms.playlist_add_id(Xmms.ACTIVE_PLAYLIST, id);
+				if(replacenadd>0) client.playlist_add_id(id,replacenadd>1);
 
 				if(iscoll) i++; else list_iter.next();
 			}
-			replacenadd = false;
+			replacenadd = 0;
 
 			return true;
 		}

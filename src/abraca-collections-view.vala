@@ -380,19 +380,23 @@ namespace Abraca {
 
 
 		public void on_menu_collection_get() {
-			on_menu_collection_getadd(false);
+			on_menu_collection_getadd(0);
 		}
 
 		public void on_menu_collection_add() {
-			on_menu_collection_getadd(true);
+			on_menu_collection_getadd(1);
 		}
 
 		public void on_menu_collection_replace() {
 			PlaylistView.instance.clear();
-			on_menu_collection_getadd(true);
+			on_menu_collection_getadd(1);
 		}
 
-		private void on_menu_collection_getadd(bool replacenadd) {
+		public void on_menu_collection_mixin() {
+			on_menu_collection_getadd(2);
+		}
+
+		private void on_menu_collection_getadd(int replacenadd) {
 			Gtk.TreeIter iter;
 
 			var selection = get_selection();
@@ -534,6 +538,12 @@ namespace Abraca {
 			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_REDO, null);
 			item.set_label(_("Replace"));
 			item.activate.connect(on_menu_collection_replace);
+			_collection_menu_item_when_coll_selected.prepend(item);
+			_collection_menu.append(item);
+
+			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_REFRESH, null);
+			item.set_label(_("Mixin"));
+			item.activate.connect(on_menu_collection_mixin);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
