@@ -379,4 +379,16 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 		equalizer_dialog.run ();
 		equalizer_dialog.hide ();
 	}
+
+	protected void on_menu_about (Gtk.Button button)
+	{
+		Application app=(Application)GLib.Application.get_default();
+		if(app!=null) app.activate_action("about",null);
+	}
+
+	protected void on_menu_quit (Gtk.Button button)
+	{
+		Application app=(Application)GLib.Application.get_default();
+		if(app!=null) app.activate_action("quit",null);
+	}
 }

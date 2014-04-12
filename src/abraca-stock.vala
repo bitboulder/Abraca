@@ -18,6 +18,7 @@
  */
 
 namespace Abraca {
+	public const string STOCK_ICON       = "abraca-icon";
 	public const string STOCK_EQUALIZER  = "abraca-equalizer";
 	public const string STOCK_COLLECTION = "abraca-collection";
 	public const string STOCK_PLAYLIST   = "abraca-playlist";
@@ -31,6 +32,15 @@ namespace Abraca {
 		Gtk.IconSet set;
 		Gtk.IconSource source;
 
+
+		/* Abraca icon */
+		set = new Gtk.IconSet();
+
+		source = new Gtk.IconSource();
+		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-32.png"));
+		set.add_source(source);
+
+		factory.add(STOCK_ICON, set);
 
 		/* Equalizer icon */
 		set = new Gtk.IconSet();
