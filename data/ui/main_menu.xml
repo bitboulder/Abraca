@@ -5,36 +5,8 @@
       <attribute name='label' translatable='yes'>_Playlist</attribute>
       <section>
         <item>
-          <attribute name="label" translatable="yes">New</attribute>
-          <attribute name='action'>win.disabled</attribute>
-        </item>
-        <item>
-          <attribute name="label" translatable="yes">New from filter</attribute>
-          <attribute name='action'>win.disabled</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
           <attribute name="label" translatable="yes">Configure sorting</attribute>
           <attribute name='action'>win.playlist-sorting</attribute>
-        </item>
-        <item>
-          <attribute name="label" translatable="yes">Clear</attribute>
-          <attribute name='action'>win.playlist-clear</attribute>
-        </item>
-        <item>
-          <attribute name="label" translatable="yes">Shuffle</attribute>
-          <attribute name='action'>win.playlist-shuffle</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="label" translatable="yes">Repeat all</attribute>
-          <attribute name='action'>win.playlist-repeat-all</attribute>
-        </item>
-        <item>
-          <attribute name="label" translatable="yes">Repeat one</attribute>
-          <attribute name='action'>win.playlist-repeat-one</attribute>
         </item>
       </section>
     </submenu>

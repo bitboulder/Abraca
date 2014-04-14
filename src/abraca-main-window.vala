@@ -298,6 +298,9 @@ namespace Abraca {
  			PlaylistView.instance._playlist_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(PlaylistView.instance.clear);
 
+			btn=new RptButton(client);
+			ptool.pack_start(btn,true,true,0);
+
 			_right_hpaned.pack1(fbox, true, true);
 			_right_hpaned.pack2(pbox, false, true);
 

@@ -42,6 +42,7 @@ sources = """
     abraca-treeview.vala
     abraca-volume-button.vala
     abraca-cat-view.vala
+    abraca-rpt-button.vala
 """.split()
 
 bld.program(
