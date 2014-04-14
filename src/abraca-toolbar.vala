@@ -63,6 +63,9 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 		time_slider = builder.get_object("playback-playtime-slider") as Gtk.Scale;
 		time_slider.set_range(0,1/0.9); // TODO: why otherwise too early full?
 
+		attach_accelerator (builder, "quit-btn", "<Ctrl>q");
+		attach_accelerator (builder, "quit-btn", "<Ctrl>w");
+
 		attach_accelerator (builder, "playback-btn-prev", "<Primary>Left");
 		attach_accelerator (builder, "playback-btn-play-pause-stop", "<Primary>p");
 		attach_accelerator (builder, "playback-btn-next", "<Primary>Right");
