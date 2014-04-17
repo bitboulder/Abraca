@@ -371,7 +371,7 @@ namespace Xmms {
 		public void attribute_list_next();
 		public void attribute_set(string key, string val);
 		public bool attribute_remove(string key);
-		public bool attribute_get(string key, out unowned string val);
+		public bool attribute_get(string key, [CCode (type="char**")] out unowned string val);
 		public void attribute_foreach(CollectionAttributeForeachFunc func);
 
 		public static Collection universe();
