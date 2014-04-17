@@ -35,7 +35,7 @@ public class Abraca.FilterWidget : Gtk.Paned {
 
 		scrolled.set_shadow_type(Gtk.ShadowType.IN);
 
-		var treeview = new FilterView(client, resolver, medialib);
+		var treeview = new FilterView(client, resolver, medialib, config);
 		scrolled.add(treeview);
 
 		Gdk.ModifierType accel_type;

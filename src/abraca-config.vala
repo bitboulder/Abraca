@@ -24,11 +24,11 @@ namespace Abraca {
 		};
 
 		public string sorting_artist {
-			get; set; default = "artist,title";
+			get; set; default = "artist,album,tracknr,title";
 		}
 
 		public string sorting_album {
-			get; set; default = "album,tracknr";
+			get; set; default = "album,tracknr,title,artist";
 		}
 
 		public string sorting_title {
@@ -36,7 +36,7 @@ namespace Abraca {
 		}
 
 		public string sorting_year {
-			get; set; default = "date,artist,album,title,tracknr";
+			get; set; default = "date,artist,album,tracknr,title";
 		}
 
 		public string sorting_path {

@@ -31,6 +31,7 @@ namespace Abraca {
 
 		private Medialib medialib;
 		private Client client;
+		private Config config;
 
 		/** context menu */
 		private Gtk.Menu filter_menu;
@@ -58,11 +59,12 @@ namespace Abraca {
 		private MetadataResolver resolver;
 
 
-		public FilterView (Client c, MetadataResolver r, Medialib m)
+		public FilterView (Client c, MetadataResolver r, Medialib m, Config g)
 		{
 			medialib = m;
 			client = c;
 			resolver = r;
+			config = g;
 
 			//fixed_height_mode = true;
 			enable_search = false;
@@ -154,16 +156,19 @@ namespace Abraca {
 			Xmms.Value order = new Xmms.Value.from_list();
 			Xmms.Result res;
 
-			if (sorting.field == null) {
-				order.list_append(new Xmms.Value.from_string("artist"));
-				order.list_append(new Xmms.Value.from_string("album"));
-				order.list_append(new Xmms.Value.from_string("partofset"));
-				order.list_append(new Xmms.Value.from_string("tracknr"));
-			} else if (sorting.order == Gtk.SortType.ASCENDING) {
-				order.list_append(new Xmms.Value.from_string("-" + sorting.field));
-			} else {
-				order.list_append(new Xmms.Value.from_string(sorting.field));
-			}
+			string sf=sorting.field;
+			if(sf==null) sf="artist,album,partofset,tracknr";
+			else if(sf=="artist") sf=config.sorting_artist;
+			else if(sf=="album")  sf=config.sorting_album;
+			else if(sf=="title")  sf=config.sorting_title;
+			else if(sf=="date")   sf=config.sorting_year;
+			else if(sf=="path")   sf=config.sorting_path;
+			foreach (string s in sf.split(","))
+				if (sorting.order == Gtk.SortType.ASCENDING) {
+					order.list_append(new Xmms.Value.from_string("-" + s));
+				} else {
+					order.list_append(new Xmms.Value.from_string(s));
+				}
 
 			if (native_sort_pl!="")
 				res = client.xmms.coll_get(native_sort_pl, "Playlists");
