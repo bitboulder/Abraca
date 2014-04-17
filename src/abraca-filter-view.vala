@@ -172,8 +172,6 @@ namespace Abraca {
 				} else {
 					order.list_append(new Xmms.Value.from_string(s));
 				}
-			stdout.printf("sort %s %s\n",so == Gtk.SortType.ASCENDING ? "-" : "+",sf);
-			stdout.printf("nativ-pl %s\n",native_sort_pl);
 
 			if (native_sort_pl!="")
 				res = client.xmms.coll_get(native_sort_pl, "Playlists");

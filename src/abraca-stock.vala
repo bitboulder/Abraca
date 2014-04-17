@@ -18,93 +18,20 @@
  */
 
 namespace Abraca {
-	public const string STOCK_ICON       = "abraca-icon";
-	public const string STOCK_EQUALIZER  = "abraca-equalizer";
-	public const string STOCK_COLLECTION = "abraca-collection";
-	public const string STOCK_PLAYLIST   = "abraca-playlist";
-	public const string STOCK_ADDALL     = "abraca-addall";
-	public const string STOCK_RATED      = "abraca-rated";
-	public const string STOCK_UNRATED    = "abraca-unrated";
-	public const string STOCK_FAVORITE   = "abraca-favorite";
 
-	public static Gtk.IconFactory create_icon_factory() throws GLib.Error {
-		Gtk.IconFactory factory = new Gtk.IconFactory();
-		Gtk.IconSet set;
-		Gtk.IconSource source;
+	public static void create_icons() throws GLib.Error {
 
+		Gtk.IconTheme.add_builtin_icon("abraca-icon",      32,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-32.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-equalizer", 24,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-equalizer.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-collection",24,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-collection-24.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-collection",16,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-collection-16.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-playlist",  24,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-playlist-24.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-playlist",  16,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-playlist-16.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-addall",    24,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-addall-24.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-addall",    16,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-addall-16.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-rated",     16,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-rating-rated.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-unrated",   16,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-rating-unrated.png"));
+		Gtk.IconTheme.add_builtin_icon("abraca-favorite",  16,new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-favorite.png"));
 
-		/* Abraca icon */
-		set = new Gtk.IconSet();
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-32.png"));
-		set.add_source(source);
-
-		factory.add(STOCK_ICON, set);
-
-		/* Equalizer icon */
-		set = new Gtk.IconSet();
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-equalizer.png"));
-		set.add_source(source);
-
-		factory.add(STOCK_EQUALIZER, set);
-
-		/* Collection icon */
-
-		set = new Gtk.IconSet();
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-collection-24.png"));
-		set.add_source(source);
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-collection-16.png"));
-		source.set_size(Gtk.IconSize.MENU);
-		source.set_size_wildcarded(false);
-		set.add_source(source);
-
-		factory.add(STOCK_COLLECTION, set);
-
-		/* Playlist icon */
-
-		set = new Gtk.IconSet();
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-playlist-24.png"));
-		set.add_source(source);
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-playlist-16.png"));
-		source.set_size(Gtk.IconSize.MENU);
-		source.set_size_wildcarded(false);
-		set.add_source(source);
-
-		factory.add(STOCK_PLAYLIST, set);
-
-		/* Add collection icon */
-
-		set = new Gtk.IconSet();
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-addall-24.png"));
-		set.add_source(source);
-
-		source = new Gtk.IconSource();
-		source.set_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-addall-16.png"));
-		source.set_size(Gtk.IconSize.MENU);
-		source.set_size_wildcarded(false);
-		set.add_source(source);
-
-		factory.add(STOCK_ADDALL, set);
-
-		/* Other icons */
-
-		factory.add(STOCK_RATED,    new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-rating-rated.png")));
-		factory.add(STOCK_UNRATED,  new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-rating-unrated.png")));
-		factory.add(STOCK_FAVORITE, new Gtk.IconSet.from_pixbuf(new Gdk.Pixbuf.from_resource("/org/xmms2/Abraca/abraca-favorite.png")));
-
-		return factory;
 	}
 }

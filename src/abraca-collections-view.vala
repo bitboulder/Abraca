@@ -65,12 +65,12 @@ namespace Abraca {
 			headers_visible = false;
 			fixed_height_mode = true;
 
-			model = store = new CollectionsModel(render_icon(STOCK_COLLECTION,
-			                                                 Gtk.IconSize.LARGE_TOOLBAR,
-			                                                 null),
-			                                     render_icon(STOCK_PLAYLIST,
-			                                                 Gtk.IconSize.LARGE_TOOLBAR,
-			                                                 null),
+			model = store = new CollectionsModel(Gtk.IconTheme.get_default().load_icon("abraca-collection",
+			                                                 24, //Gtk.IconSize.LARGE_TOOLBAR,
+			                                                 Gtk.IconLookupFlags.USE_BUILTIN),
+			                                     Gtk.IconTheme.get_default().load_icon("abraca-playlist",
+			                                                 24, //Gtk.IconSize.LARGE_TOOLBAR,
+			                                                 Gtk.IconLookupFlags.GENERIC_FALLBACK),
 			                                     _client);
 
 			store.collection_loaded.connect((type) => {

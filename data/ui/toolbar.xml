@@ -233,7 +233,7 @@
   <object class="GtkImage" id="abraca-img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">abraca-icon</property>
+    <property name="icon_name">abraca-icon</property>
   </object>
   <object class="GtkImage" id="quit-img">
     <property name="visible">True</property>
