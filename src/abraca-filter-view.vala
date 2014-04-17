@@ -28,7 +28,7 @@ namespace Abraca {
 			public unowned string field;
 			public Gtk.SortType order;
 		}
-		private string sorting_def = null;
+		private string? sorting_def = null;
 
 		private Medialib medialib;
 		private Client client;
@@ -601,7 +601,7 @@ namespace Abraca {
 			DragDropUtil.send_collection(selection_data, list);
 		}
 
-		public void set_sort_def(string f){
+		public void set_sort_def(string? f){
 			sorting_def=f;
 		}
 	}
