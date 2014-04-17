@@ -1,14 +1,3 @@
 <?xml version="1.0"?>
 <interface>
-  <menu id="win-menu">
-    <submenu>
-      <attribute name='label' translatable='yes'>_Playlist</attribute>
-      <section>
-        <item>
-          <attribute name="label" translatable="yes">Configure sorting</attribute>
-          <attribute name='action'>win.playlist-sorting</attribute>
-        </item>
-      </section>
-    </submenu>
-  </menu>
 </interface>
