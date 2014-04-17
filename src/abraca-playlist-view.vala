@@ -196,11 +196,10 @@ namespace Abraca {
 			Gdk.Pixbuf pbuf;
 
 			pbuf_renderer = new Gtk.CellRendererPixbuf();
-			pbuf_renderer.stock_size = Gtk.IconSize.MENU;
 
 			column = new Gtk.TreeViewColumn.with_attributes (
 				null, pbuf_renderer,
-				"stock-id", PlaylistModel.Column.POSITION_INDICATOR,
+				"icon-name", PlaylistModel.Column.POSITION_INDICATOR,
 				"sensitive", PlaylistModel.Column.AVAILABLE,
 				null
 			);
@@ -208,7 +207,7 @@ namespace Abraca {
 			/* Find out the width of the position idicator icon */
 			int w;
 			try {
-				pbuf = Gtk.IconTheme.get_default().load_icon("edit-paste",Gtk.IconSize.MENU,Gtk.IconLookupFlags.GENERIC_FALLBACK);
+				pbuf = Gtk.IconTheme.get_default().load_icon("go-next",Gtk.IconSize.MENU,Gtk.IconLookupFlags.GENERIC_FALLBACK);
 				w=pbuf.width;
 			}catch(GLib.Error e){
 				w=16;
@@ -247,7 +246,7 @@ namespace Abraca {
 			_playlist_menu = new Gtk.Menu();
 
 			/* Jump */
-			item = new Abraca.ImageMenuItem.with_icon_label("go-forward",_("Jump"));
+			item = new Abraca.ImageMenuItem.with_icon_label("go-next",_("Jump"));
 			item.activate.connect(jump_to_selected);
 			_playlist_menu_item_when_one_selected.prepend(item);
 			_playlist_menu.append(item);

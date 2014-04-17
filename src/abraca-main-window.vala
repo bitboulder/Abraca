@@ -281,7 +281,7 @@ namespace Abraca {
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_mixin);
 
-			btn = create_button("go-forward",_("Jump"),ptool);
+			btn = create_button("go-next",_("Jump"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_one_selected.prepend(btn);
 			btn.clicked.connect(PlaylistView.instance.jump_to_selected);
 

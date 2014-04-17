@@ -196,7 +196,7 @@ namespace Abraca {
 			/* Remove the old position indicator */
 			if (_position.valid()) {
 				get_iter(out iter, _position.get_path());
-				set(iter, Column.POSITION_INDICATOR, 0);
+				set(iter, Column.POSITION_INDICATOR, "");
 			}
 
 			/* Playlist is probably empty */
@@ -215,7 +215,7 @@ namespace Abraca {
 				set(
 					iter,
 					Column.POSITION_INDICATOR,
-					Gtk.Stock.GO_FORWARD
+					"go-next"
 				);
 
 				path = get_path(iter);
