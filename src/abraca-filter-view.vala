@@ -28,6 +28,7 @@ namespace Abraca {
 			public unowned string field;
 			public Gtk.SortType order;
 		}
+		private string sorting_def = null;
 
 		private Medialib medialib;
 		private Client client;
@@ -157,6 +158,8 @@ namespace Abraca {
 			Xmms.Result res;
 
 			string sf=sorting.field;
+			Gtk.SortType so=sorting.order;
+			if(sf==null){ sf=sorting_def; so=Gtk.SortType.DESCENDING; }
 			if(sf==null) sf="artist,album,partofset,tracknr";
 			else if(sf=="artist") sf=config.sorting_artist;
 			else if(sf=="album")  sf=config.sorting_album;
@@ -164,11 +167,13 @@ namespace Abraca {
 			else if(sf=="date")   sf=config.sorting_year;
 			else if(sf=="path")   sf=config.sorting_path;
 			foreach (string s in sf.split(","))
-				if (sorting.order == Gtk.SortType.ASCENDING) {
+				if (so == Gtk.SortType.ASCENDING) {
 					order.list_append(new Xmms.Value.from_string("-" + s));
 				} else {
 					order.list_append(new Xmms.Value.from_string(s));
 				}
+			stdout.printf("sort %s %s\n",so == Gtk.SortType.ASCENDING ? "-" : "+",sf);
+			stdout.printf("nativ-pl %s\n",native_sort_pl);
 
 			if (native_sort_pl!="")
 				res = client.xmms.coll_get(native_sort_pl, "Playlists");
@@ -368,7 +373,7 @@ namespace Abraca {
 			var cell = new Gtk.CellRendererText();
 			cell.ellipsize = Pango.EllipsizeMode.END;
 
-			int pos = 2;
+			int pos = FilterModel.Column.NUM;
 			foreach (var key in props) {
 				var column = new Gtk.TreeViewColumn.with_attributes(
 					key, cell, "text", pos++, null
@@ -594,6 +599,10 @@ namespace Abraca {
 			});
 
 			DragDropUtil.send_collection(selection_data, list);
+		}
+
+		public void set_sort_def(string f){
+			sorting_def=f;
 		}
 	}
 }

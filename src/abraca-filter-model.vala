@@ -31,14 +31,16 @@ namespace Abraca {
 
 		public enum Column {
 			STATUS,
-			ID
+			ID,
+			SID,
+			NUM
 		}
 
 		/* TODO: This should be a property, not just a member variable */
 		public string[] dynamic_columns;
 
 		/* Map medialib id to row */
-		private Gee.HashMap<int,bool> add_map = new Gee.HashMap<int,bool>();
+		private Gee.HashMap<int,int> add_map = new Gee.HashMap<int,int>();
 
 		private Client client;
 		private MetadataRequestor requestor;
@@ -50,16 +52,18 @@ namespace Abraca {
 			client = c;
 
 
-			var types = new GLib.Type[2 + props.length];
+			var types = new GLib.Type[Column.NUM + props.length];
 
 			types[0] = typeof(int);
 			types[1] = typeof(uint);
+			types[2] = typeof(int);
 
-			for (int i = 2; i < types.length; i++) {
+			for (int i = Column.NUM; i < types.length; i++) {
 				types[i] = typeof(string);
 			}
 
 			set_column_types(types);
+			set_sort_column_id(Column.SID,Gtk.SortType.ASCENDING);
 
 			dynamic_columns = (owned) props;
 
@@ -78,6 +82,7 @@ namespace Abraca {
 		{
 			clear();
 			add_map.clear();
+			int sid=0;
 
 			iscoll=val.is_type(Xmms.ValueType.COLL);
 			uint n=0;
@@ -102,7 +107,7 @@ namespace Abraca {
 					if (!(list_iter.entry(out entry) && entry.get_int(out id))) continue;
 				}
 
-				add_map.set(id,true);
+				add_map.set(id,sid++);
 				requestor.resolve((int) id);
 
 				if(replacenadd>0) client.playlist_add_id(id,replacenadd>1);
@@ -133,10 +138,11 @@ namespace Abraca {
 		{
 			Gtk.TreeIter iter;
 			Gtk.TreeIter? ialb=null;
-			int mid;
+			int mid,sid;
 
 			val.dict_entry_get_int("id", out mid);
-			if(!add_map.get(mid)) return false;
+			if(!add_map.has_key(mid)) return false;
+			sid=add_map.get(mid);
 
 			if(!iscoll){
 				string alb="", art="";
@@ -153,12 +159,16 @@ namespace Abraca {
 				}
 				if(ialbtxt!=alb){
 					append(out ialb,null);
+					set(ialb, Column.SID, sid);
 					set(ialb, palb, alb);
 					set(ialb, part, art);
 				}else{
 					string ialbart;
 					get(ialb, part, out ialbart);
 					if(ialbart!=art) set(ialb,part,"");
+					int albsid;
+					get(ialb, Column.SID, out albsid);
+					if(sid<albsid) set(ialb, Column.SID, sid);
 				}
 				set(ialb,get_col_pos("title"),"[%i]".printf(iter_n_children(ialb)+1));
   			}
@@ -166,9 +176,10 @@ namespace Abraca {
 			append(out iter,ialb);
   
 			set(iter, Column.ID, mid);
+			set(iter, Column.SID, sid);
 			set(iter, Column.STATUS, Status.RESOLVED);
   
-			int pos = 2;
+			int pos = Column.NUM;
 			foreach (unowned string key in dynamic_columns) {
 				string formatted = "";
 				Transform.normalize_dict (val, key, out formatted);
@@ -180,7 +191,7 @@ namespace Abraca {
   		}
   
 		private int get_col_pos(string name) {
-  			int pos = 2;
+  			int pos = Column.NUM;
 			int p = -1;
   			foreach (unowned string key in dynamic_columns) {
 				if(key == name){ p=pos; break; }

@@ -148,6 +148,12 @@ public class Abraca.FilterSearchBox : Gtk.ComboBox, Searchable {
 			return false;
 		}
 
+		if(_current_query.length>19){
+			if(_current_query.substring(0,19)=="in:Collections/alb_") treeview.set_sort_def("album");
+			else if(_current_query.substring(0,19)=="in:Collections/art_") treeview.set_sort_def("artist");
+			else treeview.set_sort_def(null);
+		}
+
 		if (!Xmms.Collection.parse(_current_query, out coll)) {
 			_current_query = null;
 			_timer = 0;
