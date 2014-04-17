@@ -145,32 +145,44 @@ namespace Abraca {
 			sid=add_map.get(mid);
 
 			if(!iscoll){
-				string alb="", art="";
-				Transform.normalize_dict (val, "album", out alb);
-				Transform.normalize_dict (val, "artist", out art);
 				int palb=get_col_pos("album");
-				int part=get_col_pos("artist");
-				string ialbtxt="";
-				if(get_iter_first(out ialb)){
-					set(ialb, Column.ID, -1);
-					get(ialb,palb,out ialbtxt);
-					while(ialbtxt!=alb && iter_next(ref ialb))
+				if(palb>=0){
+					int part=get_col_pos("artist");
+					int ptit=get_col_pos("title");
+					int pdur=get_col_pos("duration");
+					string alb="", art="", dur="";
+					Transform.normalize_dict (val, "album", out alb);
+					if(part>=0) Transform.normalize_dict (val, "artist", out art);
+					if(pdur>=0) Transform.normalize_dict (val, "duration", out dur);
+					string ialbtxt="";
+					if(get_iter_first(out ialb)){
+						set(ialb, Column.ID, -1);
 						get(ialb,palb,out ialbtxt);
+						while(ialbtxt!=alb && iter_next(ref ialb))
+							get(ialb,palb,out ialbtxt);
+					}
+					if(ialbtxt!=alb){
+						append(out ialb,null);
+						set(ialb, Column.SID, sid);
+						set(ialb, palb, alb);
+						if(part>=0) set(ialb, part, art);
+					}else{
+						if(part>=0){
+							string ialbart;
+							get(ialb, part, out ialbart);
+							if(ialbart!=art) set(ialb,part,"");
+						}
+						int ialbsid;
+						get(ialb, Column.SID, out ialbsid);
+						if(sid<ialbsid) set(ialb, Column.SID, sid);
+					}
+					if(ptit>=0) set(ialb,ptit,"[%i]".printf(iter_n_children(ialb)+1));
+					if(pdur>=0){
+						string ialbdur;
+						get(ialb,pdur,out ialbdur);
+						set(ialb,pdur,add_dur(ialbdur,dur));
+					}
 				}
-				if(ialbtxt!=alb){
-					append(out ialb,null);
-					set(ialb, Column.SID, sid);
-					set(ialb, palb, alb);
-					set(ialb, part, art);
-				}else{
-					string ialbart;
-					get(ialb, part, out ialbart);
-					if(ialbart!=art) set(ialb,part,"");
-					int albsid;
-					get(ialb, Column.SID, out albsid);
-					if(sid<albsid) set(ialb, Column.SID, sid);
-				}
-				set(ialb,get_col_pos("title"),"[%i]".printf(iter_n_children(ialb)+1));
   			}
   
 			append(out iter,ialb);
@@ -199,6 +211,18 @@ namespace Abraca {
   			}
 			return p;
   		}
+
+		private string add_dur(string? a, string b){
+			if(a==null) return b;
+			int a0,a1,b0,b1;
+			a.scanf("%d:%d",out a0,out a1);
+			b.scanf("%d:%d",out b0,out b1);
+			a0+=b0;
+			a1+=b1;
+			a0+=(int)(a1/60);
+			a1%=60;
+			return "%d:%d".printf(a0,a1);
+		}
   	}
 }
 
