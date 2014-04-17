@@ -206,10 +206,16 @@ namespace Abraca {
 			);
 
 			/* Find out the width of the position idicator icon */
-			pbuf = render_icon(Gtk.Stock.GO_FORWARD, Gtk.IconSize.MENU, null);
+			int w;
+			try {
+				pbuf = Gtk.IconTheme.get_default().load_icon("edit-paste",Gtk.IconSize.MENU,Gtk.IconLookupFlags.GENERIC_FALLBACK);
+				w=pbuf.width;
+			}catch(GLib.Error e){
+				w=16;
+			}
 
 			/* Add some extra width otherwise it will not fit into the column */
-			column.set_min_width(pbuf.width + 3 * 2);
+			column.set_min_width(w + 3 * 2);
 			column.set_sizing(Gtk.TreeViewColumnSizing.FIXED);
 
 			append_column (column);
@@ -235,28 +241,23 @@ namespace Abraca {
 
 		private void create_context_menu (Config config)
 		{
-			Gtk.ImageMenuItem img_item;
 			Gtk.MenuItem item;
 			Gtk.Menu submenu;
-			Gtk.Image img;
 
 			_playlist_menu = new Gtk.Menu();
 
 			/* Jump */
-			img_item = new Gtk.ImageMenuItem.with_label(_("Jump"));
-			img_item.set_image(new Gtk.Image.from_stock(Gtk.STOCK_GO_FORWARD,Gtk.IconSize.MENU));
-			img_item.activate.connect(jump_to_selected);
-			_playlist_menu_item_when_one_selected.prepend(img_item);
-			_playlist_menu.append(img_item);
+			item = new Abraca.ImageMenuItem.with_icon_label("go-forward",_("Jump"));
+			item.activate.connect(jump_to_selected);
+			_playlist_menu_item_when_one_selected.prepend(item);
+			_playlist_menu.append(item);
 
 			/* Separator */
 			item = new Gtk.SeparatorMenuItem();
 			_playlist_menu.append(item);
 
 			/* Information */
-			item = new Gtk.ImageMenuItem.from_stock(
-				Gtk.Stock.INFO, null
-			);
+			item = new Abraca.ImageMenuItem.with_icon_label("dialog-information",_("Info"));
 			item.activate.connect(on_menu_playlist_info);
 			_playlist_menu_item_when_some_selected.prepend(item);
 			_playlist_menu.append(item);
@@ -282,17 +283,13 @@ namespace Abraca {
 			});
 			submenu.append(item);
 
-			img_item = new Gtk.ImageMenuItem.from_stock(
-				Gtk.Stock.FIND, null
-			);
-			img_item.set_submenu(submenu);
-			_playlist_menu_item_when_some_selected.prepend(img_item);
-			_playlist_menu.append(img_item);
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-find",_("Find"));
+			item.set_submenu(submenu);
+			_playlist_menu_item_when_some_selected.prepend(item);
+			_playlist_menu.append(item);
 
 			/* Delete */
-			item = new Gtk.ImageMenuItem.from_stock(
-				Gtk.Stock.DELETE, null
-			);
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-delete",_("Delete"));
 			item.activate.connect(delete_selected);
 			_playlist_menu_item_when_some_selected.prepend(item);
 			_playlist_menu.append(item);
@@ -339,30 +336,22 @@ namespace Abraca {
 			});
 			submenu.append(item);
 
-			img = new Gtk.Image.from_stock(
-				Gtk.Stock.SORT_ASCENDING, Gtk.IconSize.MENU
-			);
-
-			img_item = new Gtk.ImageMenuItem.with_label(_("Sort"));
-			img_item.set_image(img);
-			img_item.set_submenu(submenu);
-			_playlist_menu_item_when_not_empty.prepend(img_item);
-			_playlist_menu.append(img_item);
+			item = new Abraca.ImageMenuItem.with_icon_label("view-sort-ascending",_("Sort"));
+			item.set_submenu(submenu);
+			_playlist_menu_item_when_not_empty.prepend(item);
+			_playlist_menu.append(item);
 
 			/* Shuffle */
-			img_item = new Gtk.ImageMenuItem.with_label(_("Shuffle"));
-			img_item.set_image(new Gtk.Image.from_icon_name("stock_shuffle",Gtk.IconSize.MENU));
-			img_item.activate.connect(shuffle);
-			_playlist_menu_item_when_not_empty.prepend(img_item);
-			_playlist_menu.append(img_item);
+			item = new Abraca.ImageMenuItem.with_icon_label("media-playlist-shuffle",_("Shuffle"));
+			item.activate.connect(shuffle);
+			_playlist_menu_item_when_not_empty.prepend(item);
+			_playlist_menu.append(item);
 
 			/* Clear */
-			img_item = new Gtk.ImageMenuItem.from_stock(
-				Gtk.Stock.CLEAR, null
-			);
-			img_item.activate.connect(clear);
-			_playlist_menu_item_when_not_empty.prepend(img_item);
-			_playlist_menu.append(img_item);
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-clear",_("Clear"));
+			item.activate.connect(clear);
+			_playlist_menu_item_when_not_empty.prepend(item);
+			_playlist_menu.append(item);
 
 			_playlist_menu.show_all();
 		}

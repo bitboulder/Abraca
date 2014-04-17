@@ -43,6 +43,7 @@ sources = """
     abraca-volume-button.vala
     abraca-cat-view.vala
     abraca-rpt-button.vala
+    abraca-image-menu-item.vala
 """.split()
 
 bld.program(

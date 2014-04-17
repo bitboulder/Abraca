@@ -184,7 +184,7 @@ namespace Abraca {
 		{
 			var btn = new Gtk.Button();
 			btn.relief = Gtk.ReliefStyle.NONE;
-			if(img!="") btn.image = new Gtk.Image.from_stock(img,Gtk.IconSize.SMALL_TOOLBAR);
+			if(img!="") btn.image = new Gtk.Image.from_icon_name(img,Gtk.IconSize.SMALL_TOOLBAR);
 			btn.has_tooltip=true;
 			btn.sensitive=false;
 			btn.query_tooltip.connect((w,x,y,mode,tooltip)=>{tooltip.set_text(ttip); return true; });
@@ -241,60 +241,59 @@ namespace Abraca {
 
 			Gtk.Button btn;
 
-			btn = create_button(Gtk.Stock.APPLY,_("Activate"),ctool);
+			btn = create_button("gtk-apply",_("Activate"),ctool);
  			CollectionsView.instance._collection_menu_item_when_pllst_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_activate);
 
-			btn = create_button(Gtk.Stock.FIND,_("Show"),ctool);
+			btn = create_button("edit-find",_("Show"),ctool);
  			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_get);
 
-			btn = create_button(Gtk.Stock.ADD,_("Add"),ctool);
+			btn = create_button("list-add",_("Add"),ctool);
  			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_add);
 
-			btn = create_button(Gtk.STOCK_REDO,_("Replace"),ctool);
+			btn = create_button("edit-redo",_("Replace"),ctool);
  			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_replace);
 
-			btn = create_button(Gtk.STOCK_REFRESH,_("Mixin"),ctool);
+			btn = create_button("edit-paste",_("Mixin"),ctool);
  			CollectionsView.instance._collection_menu_item_when_coll_selected.prepend(btn);
 			btn.clicked.connect(CollectionsView.instance.on_menu_collection_mixin);
 
-			btn = create_button(Gtk.STOCK_SELECT_ALL,_("Select all"),ftool);
+			btn = create_button("edit-select-all",_("Select all"),ftool);
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_select_all);
 
-			btn = create_button(STOCK_ADDALL,_("Add all"),ftool);
+			btn = create_button("abraca-addall",_("Add all"),ftool);
  			FilterView.instance.filter_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_add_all);
 
-			btn = create_button(Gtk.STOCK_ADD,_("Add"),ftool);
+			btn = create_button("list-add",_("Add"),ftool);
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_add);
 
-			btn = create_button(Gtk.STOCK_REDO,_("Replace"),ftool);
+			btn = create_button("edit-redo",_("Replace"),ftool);
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_replace);
 
-			btn = create_button(Gtk.STOCK_REFRESH,_("Mixin"),ftool);
+			btn = create_button("edit-paste",_("Mixin"),ftool);
  			FilterView.instance.filter_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(FilterView.instance.on_menu_mixin);
 
-			btn = create_button(Gtk.Stock.GO_FORWARD,_("Jump"),ptool);
+			btn = create_button("go-forward",_("Jump"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_one_selected.prepend(btn);
 			btn.clicked.connect(PlaylistView.instance.jump_to_selected);
 
-			btn = create_button("",_("Shuffle"),ptool);
-			btn.image = new Gtk.Image.from_icon_name("stock_shuffle",Gtk.IconSize.SMALL_TOOLBAR);
+			btn = create_button("media-playlist-shuffle",_("Shuffle"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(PlaylistView.instance.shuffle);
 
-			btn = create_button(Gtk.Stock.DELETE,_("Delete"),ptool);
+			btn = create_button("edit-delete",_("Delete"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_some_selected.prepend(btn);
 			btn.clicked.connect(PlaylistView.instance.delete_selected);
 
-			btn = create_button(Gtk.Stock.CLEAR,_("Clear"),ptool);
+			btn = create_button("edit-clear",_("Clear"),ptool);
  			PlaylistView.instance._playlist_menu_item_when_not_empty.prepend(btn);
 			btn.clicked.connect(PlaylistView.instance.clear);
 

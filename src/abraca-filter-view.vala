@@ -28,7 +28,7 @@ namespace Abraca {
 			public unowned string field;
 			public Gtk.SortType order;
 		}
-		private string sorting_def = null;
+		private string? sorting_def = null;
 
 		private Medialib medialib;
 		private Client client;
@@ -496,21 +496,21 @@ namespace Abraca {
 
 		private void create_header_menu ()
 		{
-			Gtk.MenuItem item;
+			Gtk.ImageMenuItem item;
 
 			header_menu = new Gtk.Menu();
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.EDIT, null);
+			item = new Abraca.ImageMenuItem.with_icon_label("gtk-edit",_("Edit"));
 			item.activate.connect(on_header_edit);
 			header_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.REMOVE, null);
+			item = new Abraca.ImageMenuItem.with_icon_label("list-remove",_("Remove"));
 			item.activate.connect(on_header_remove);
 			header_menu.append(item);
 
 			header_menu.append(new Gtk.SeparatorMenuItem());
 
-			item = new Gtk.MenuItem.with_label(_("Reset sorting"));
+			item = new Gtk.ImageMenuItem.with_label(_("Reset sorting"));
 			item.activate.connect(on_header_reset_sorting);
 			header_menu.append(item);
 		}
@@ -521,7 +521,7 @@ namespace Abraca {
 
 			filter_menu = new Gtk.Menu();
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.SELECT_ALL, null);
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-select-all",_("Select all"));
 			item.activate.connect(on_menu_select_all);
 			filter_menu_item_when_not_empty.prepend(item);
 			filter_menu.append(item);
@@ -530,7 +530,7 @@ namespace Abraca {
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.INFO, null);
+			item = new Abraca.ImageMenuItem.with_icon_label("dialog-information",_("Info"));
 			item.activate.connect(on_menu_info);
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
@@ -539,25 +539,22 @@ namespace Abraca {
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(STOCK_ADDALL, null);
-			item.set_label(_("_Add all"));
+			item = new Abraca.ImageMenuItem.with_icon_label("abraca-addall",_("Add all"));
 			item.activate.connect(on_menu_add_all);
 			filter_menu_item_when_not_empty.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.ADD, null);
+			item = new Abraca.ImageMenuItem.with_icon_label("list-add",_("Add"));
 			item.activate.connect(on_menu_add);
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.REDO, null);
-			item.set_label(_("_Replace"));
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-redo",_("Replace"));
 			item.activate.connect(on_menu_replace);
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.Stock.REFRESH, null);
-			item.set_label(_("_Mixin"));
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-paste",_("Mixin"));
 			item.activate.connect(on_menu_mixin);
 			filter_menu_item_when_some_selected.prepend(item);
 			filter_menu.append(item);
@@ -601,7 +598,7 @@ namespace Abraca {
 			DragDropUtil.send_collection(selection_data, list);
 		}
 
-		public void set_sort_def(string f){
+		public void set_sort_def(string? f){
 			sorting_def=f;
 		}
 	}

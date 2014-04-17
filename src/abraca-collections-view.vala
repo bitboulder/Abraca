@@ -513,36 +513,28 @@ namespace Abraca {
 
 			_collection_menu = new Gtk.Menu();
 
-			item = new Gtk.ImageMenuItem.with_mnemonic(_("A_ctivate"));
-			item.image = new Gtk.Image.from_stock(
-					Gtk.STOCK_APPLY, Gtk.IconSize.MENU
-			);
+			item = new Abraca.ImageMenuItem.with_icon_label("gtk-apply",_("Activate"));
 			item.activate.connect(on_menu_collection_activate);
 			_collection_menu_item_when_pllst_selected.prepend(item);
 			_collection_menu.append(item);
 			_collection_menu_item_activate=item;
 
-			item = new Gtk.ImageMenuItem.with_mnemonic(_("_Show"));
-			item.image = new Gtk.Image.from_stock(
-				Gtk.Stock.FIND, Gtk.IconSize.MENU
-			);
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-find",_("Show"));
 			item.activate.connect(on_menu_collection_get);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_ADD, null);
+			item = new Abraca.ImageMenuItem.with_icon_label("list-add",_("Add"));
 			item.activate.connect(on_menu_collection_add);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_REDO, null);
-			item.set_label(_("Replace"));
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-redo",_("Replace"));
 			item.activate.connect(on_menu_collection_replace);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
 
-			item = new Gtk.ImageMenuItem.from_stock(Gtk.STOCK_REFRESH, null);
-			item.set_label(_("Mixin"));
+			item = new Abraca.ImageMenuItem.with_icon_label("edit-paste",_("Mixin"));
 			item.activate.connect(on_menu_collection_mixin);
 			_collection_menu_item_when_coll_selected.prepend(item);
 			_collection_menu.append(item);
