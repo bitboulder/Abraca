@@ -44,7 +44,9 @@ namespace Abraca {
 		public Gdk.Pixbuf unrated_icon {
 			get {
 				if (_unrated_icon == null)
-					_unrated_icon = render_icon ("abraca-unrated", Gtk.IconSize.MENU, null);
+					try{
+						_unrated_icon = Gtk.IconTheme.get_default().load_icon("abraca-unrated", Gtk.IconSize.MENU, Gtk.IconLookupFlags.GENERIC_FALLBACK);
+					}catch(GLib.Error e){}
 				return _unrated_icon;
 			}
 			set {
@@ -56,7 +58,9 @@ namespace Abraca {
 		public Gdk.Pixbuf rated_icon {
 			get {
 				if (_rated_icon == null)
-					_rated_icon = render_icon ("abraca-rated", Gtk.IconSize.MENU, null);
+					try{
+						_rated_icon = Gtk.IconTheme.get_default().load_icon("abraca-rated", Gtk.IconSize.MENU, Gtk.IconLookupFlags.GENERIC_FALLBACK);
+					}catch(GLib.Error e){}
 				return _rated_icon;
 			}
 			set {
