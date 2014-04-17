@@ -176,6 +176,8 @@ public class Abraca.FilterBrowser : Gtk.Box {
 
 	public FilterBrowser (Client client, Config config, Searchable searchable)
 	{
+		Object(orientation: Gtk.Orientation.HORIZONTAL, spacing: 0);
+
 		var properties = new string[] { "artist", "album" };
 
 		FilterBrowserView previous = null;

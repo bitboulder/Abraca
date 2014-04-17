@@ -22,7 +22,7 @@ using Sqlite;
 
 namespace Abraca {
 
-	public class CatView : Gtk.VBox {
+	public class CatView : Gtk.Box {
 
 		private Client client;
 		private Searchable search;
@@ -72,6 +72,8 @@ namespace Abraca {
 
 		public CatView (Client _client, Searchable _search)
 		{
+			Object(orientation: Gtk.Orientation.VERTICAL, spacing: 0);
+
 			if(Database.open_v2("/home/frank/.config/xmms2/medialib.db",out db,Sqlite.OPEN_READONLY)!=Sqlite.OK) db=null;
 			ce = new GLib.List<CatEntry> ();
 			ce.append(new CatEntry("Angehört","f:sehr oft:e:oft:d:mittel:c:selten:b:sehr selten:a:nie"));
