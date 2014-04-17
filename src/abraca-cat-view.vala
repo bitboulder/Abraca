@@ -61,7 +61,6 @@ namespace Abraca {
 					mi.set_draw_as_radio(true);
 					menu.append(mi);
 				}
-				menu.set_title(name);
 				menu.show_all();
 				btn=new Gtk.Button.with_label(name + " (egal)");
 				btn.clicked.connect((btn) => { menu.popup(null,null,null,0,Gtk.get_current_event_time()); });
