@@ -26,7 +26,6 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 
 	private Gtk.Button playback_button;
 
-	private Gtk.Button equalizer_button;
 	private Gtk.Dialog equalizer_dialog;
 
 	private int duration = 0;
@@ -344,8 +343,6 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 	{
 		unowned Xmms.ListIter iter;
 
-		equalizer_button.sensitive = false;
-
 		for (value.get_list_iter(out iter); iter.valid(); iter.next()) {
 			Xmms.Value entry;
 			string name;
@@ -356,10 +353,6 @@ public class Abraca.ToolBar : Gtk.EventBox, Gtk.Buildable {
 
 			if (!entry.dict_entry_get_string("shortname", out name)) {
 				continue;
-			}
-
-			if (name == "equalizer") {
-				equalizer_button.sensitive = true;
 			}
 		}
 
