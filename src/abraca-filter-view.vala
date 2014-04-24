@@ -381,7 +381,7 @@ namespace Abraca {
 				column.fixed_width = 120;
 				column.sizing = Gtk.TreeViewColumnSizing.FIXED;
 				column.clickable = true;
-				column.widget = new Gtk.Label(key);
+				column.widget = new Gtk.Label(_(key));
 				column.widget.show();
 
 				insert_column(column, -1);

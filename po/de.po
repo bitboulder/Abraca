@@ -245,3 +245,15 @@ msgstr "Gestern"
 #: src/abraca-transform.vala:140
 msgid "Never"
 msgstr "Niemals"
+
+msgid "artist"
+msgstr "Interpret"
+
+msgid "album"
+msgstr "Album"
+
+msgid "title"
+msgstr "Titel"
+
+msgid "duration"
+msgstr "Länge"
