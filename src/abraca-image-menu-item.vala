@@ -26,6 +26,7 @@ namespace Abraca {
 		public ImageMenuItem.with_icon_label(string _icon_name,string _label){
 			image = new Gtk.Image.from_icon_name(_icon_name,Gtk.IconSize.MENU);
 			label = _label;
+			always_show_image=true;
 		}
 	}
 }
