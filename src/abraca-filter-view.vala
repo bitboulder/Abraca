@@ -494,7 +494,7 @@ namespace Abraca {
 
 		private void create_header_menu ()
 		{
-			Gtk.ImageMenuItem item;
+			Gtk.MenuItem item;
 
 			header_menu = new Gtk.Menu();
 
@@ -508,7 +508,7 @@ namespace Abraca {
 
 			header_menu.append(new Gtk.SeparatorMenuItem());
 
-			item = new Gtk.ImageMenuItem.with_label(_("Reset sorting"));
+			item = new Abraca.ImageMenuItem.with_icon_label("",_("Reset sorting"));
 			item.activate.connect(on_header_reset_sorting);
 			header_menu.append(item);
 		}

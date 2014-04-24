@@ -513,7 +513,7 @@ namespace Abraca {
 		 */
 		private void create_context_menu ()
 		{
-			Gtk.ImageMenuItem item;
+			Gtk.MenuItem item;
 
 			_collection_menu = new Gtk.Menu();
 

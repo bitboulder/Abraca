@@ -22,11 +22,16 @@ using Sqlite;
 
 namespace Abraca {
 
-	public class ImageMenuItem : Gtk.ImageMenuItem {
+	public class ImageMenuItem : Gtk.MenuItem {
 		public ImageMenuItem.with_icon_label(string _icon_name,string _label){
-			image = new Gtk.Image.from_icon_name(_icon_name,Gtk.IconSize.MENU);
-			label = _label;
-			always_show_image=true;
+			var box=new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
+			if(_icon_name!=""){
+				var img = new Gtk.Image.from_icon_name(_icon_name,Gtk.IconSize.MENU);
+				box.pack_start(img,false,false,0);
+			}
+			var lab=new Gtk.Label(_label);
+			box.pack_start(lab,true,true,0);
+			child=box;
 		}
 	}
 }
