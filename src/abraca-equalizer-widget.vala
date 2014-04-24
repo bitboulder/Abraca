@@ -137,7 +137,7 @@ public class Abraca.Equalizer : Gtk.VBox {
 	private void on_combobox_changed(Gtk.ComboBox combobox)
 	{
 		var text = (combobox as Gtk.ComboBoxText).get_active_text();
-		if (text == "disabled") {
+		if (text.down() == "disabled") {
 			client.xmms.config_set_value("equalizer.enabled", "0");
 		} else {
 			client.xmms.config_list_values().notifier_set(enable_equalizer);

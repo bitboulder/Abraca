@@ -121,6 +121,7 @@ public class Abraca.EqualizerModel : GLib.Object {
 		if (!dict.dict_entry_get_string("equalizer.bands", out value)) {
 			throw new ConfigError.MISSING("Equalizer bands config key missing.");
 		}
+		if(value=="Disabled") return bands;
 
 		if (!int64.try_parse(value, out count)) {
 			throw new ConfigError.INVALID("Equalizer bands config not an integer.");
