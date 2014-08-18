@@ -1,6 +1,6 @@
 /**
  * Abraca, an XMMS2 client.
- * Copyright (C) 2008-2013 Abraca Team
+ * Copyright (C) 2008-2014 Abraca Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -102,6 +102,8 @@ namespace Abraca {
 			table.set_row_spacing(7);
 			table.set_column_spacing(5);
 			table.border_width = 5;
+			table.hexpand = true;
+			table.valign = Gtk.Align.START;
 
 			var entries = new Gtk.Entry[6];
 
@@ -119,11 +121,11 @@ namespace Abraca {
 
 				entries[i] = new Gtk.Entry();
 				entries[i].text = values[i];
-				table.attach(entries[i], 1, i + 0, 1, 1);
+				entries[i].expand = true;
+				table.attach(entries[i], 1, i, 1, 1);
 			}
 
 			var box = dialog.get_content_area () as Gtk.Box;
-			box.pack_start(new PrettyLabel (_("Configure Sorting")), false, true, 0);
 			box.pack_start(table, true, true, 0);
 
 			dialog.show_all();

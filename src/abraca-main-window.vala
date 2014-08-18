@@ -1,6 +1,6 @@
 /**
  * Abraca, an XMMS2 client.
- * Copyright (C) 2008-2013 Abraca Team
+ * Copyright (C) 2008-2014 Abraca Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ namespace Abraca {
 			add(_main_ui);
 
 			try {
-				set_icon(new Gdk.Pixbuf.from_resource ("/org/xmms2/Abraca/abraca-32.png"));
+				set_icon(new Gdk.Pixbuf.from_resource ("/org/xmms2/Abraca/abraca-192.png"));
 			} catch (GLib.Error e) {
 				GLib.assert_not_reached ();
 			}

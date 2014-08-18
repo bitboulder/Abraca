@@ -1,6 +1,6 @@
 /**
  * Abraca, an XMMS2 client.
- * Copyright (C) 2008-2013 Abraca Team
+ * Copyright (C) 2008-2014 Abraca Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -484,10 +484,8 @@ namespace Abraca {
 			entry = (Gtk.Entry) combo.get_child ();
 			entry.set_completion(comp);
 			entry.activates_default = true;
-			var vbox = get_content_area () as Gtk.Box;
 
-			var label = new PrettyLabel (_("Enter Address"));
-			vbox.pack_start(label, true, true, 0);
+			var vbox = get_content_area () as Gtk.Box;
 			vbox.pack_start(combo, true, true, 0);
 
 			close.connect(on_close);

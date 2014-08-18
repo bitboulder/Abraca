@@ -1,6 +1,6 @@
 /**
  * Abraca, an XMMS2 client.
- * Copyright (C) 2008-2013 Abraca Team
+ * Copyright (C) 2008-2014 Abraca Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -380,7 +380,7 @@ namespace Abraca {
 
 				if (Transform.normalize_dict(val, "duration", out duration)) {
 					info = GLib.Markup.printf_escaped(
-						"<b>%s</b> - <small>%s</small>\n" + _("<small>by</small> %s <small>from</small> %s"),
+						"<b>%s</b> - <small>%s</small>\n" + _("<small>by</small> %s <small>on</small> %s"),
 						title, duration, artist, album
 					);
 				} else {

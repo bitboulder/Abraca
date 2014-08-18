@@ -1,6 +1,6 @@
 /**
  * Abraca, an XMMS2 client.
- * Copyright (C) 2008-2013 Abraca Team
+ * Copyright (C) 2008-2014 Abraca Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -111,6 +111,14 @@ public class Abraca.EqualizerModel : GLib.Object {
 		return bands;
 	}
 
+	private Gee.List<double?> get_dummy_bands(int count)
+	{
+		var bands = new Gee.ArrayList<double?>();
+		for (var i = 0; i < count; i++)
+			bands.add(0.0);
+		return bands;
+	}
+
 	private Gee.List<double?> get_bands(Xmms.Value dict)
 		throws ConfigError
 	{
@@ -154,6 +162,10 @@ public class Abraca.EqualizerModel : GLib.Object {
 			band_list_changed(bands);
 		} catch (ConfigError e) {
 			GLib.warning(e.message);
+			enabled = false;
+			band_count = 10;
+			band_count_changed();
+			band_list_changed(get_dummy_bands(band_count));
 		}
 
 		return true;
