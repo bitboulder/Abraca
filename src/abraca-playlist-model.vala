@@ -212,11 +212,7 @@ namespace Abraca {
 				get(iter, Column.ID, out mid);
 				client.current_id = mid;
 
-				set(
-					iter,
-					Column.POSITION_INDICATOR,
-					"go-next"
-				);
+				set(iter, Column.POSITION_INDICATOR, "go-next" );
 
 				path = get_path(iter);
 

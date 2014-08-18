@@ -473,8 +473,8 @@ namespace Abraca {
 			modal = true;
 			title = _("Add URL");
 
-			add_button("gtk-cancel", Gtk.ResponseType.CANCEL);
-			add_button("gtk-ok", Gtk.ResponseType.OK);
+			add_button(_("Cancel"), Gtk.ResponseType.CANCEL);
+			add_button(_("Ok"), Gtk.ResponseType.OK);
 
 			var combo = new Gtk.ComboBoxText.with_entry();
 			var comp = new Gtk.EntryCompletion();
@@ -578,8 +578,8 @@ namespace Abraca {
 			select_multiple = true;
 			title = _("Add File");
 
-			add_button("gtk-cancel", Gtk.ResponseType.CANCEL);
-			add_button("gtk-ok", Gtk.ResponseType.OK);
+			add_button(_("Cancel"), Gtk.ResponseType.CANCEL);
+			add_button(_("Ok"), Gtk.ResponseType.OK);
 
 			close.connect(on_close);
 			response.connect(on_response);

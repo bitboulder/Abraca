@@ -205,16 +205,10 @@ namespace Abraca {
 			);
 
 			/* Find out the width of the position idicator icon */
-			int w;
-			try {
-				pbuf = Gtk.IconTheme.get_default().load_icon("go-next",Gtk.IconSize.MENU,Gtk.IconLookupFlags.GENERIC_FALLBACK);
-				w=pbuf.width;
-			}catch(GLib.Error e){
-				w=16;
-			}
+			pbuf = Abraca.Icons.by_name("go-next", Gtk.IconSize.MENU);
 
 			/* Add some extra width otherwise it will not fit into the column */
-			column.set_min_width(w + 3 * 2);
+			column.set_min_width((pbuf.width + 3) * 2);
 			column.set_sizing(Gtk.TreeViewColumnSizing.FIXED);
 
 			append_column (column);
