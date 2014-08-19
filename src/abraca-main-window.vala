@@ -49,7 +49,7 @@ namespace Abraca {
 			{ "equalizer", on_open_equalizer },
 		};
 
-		public MainWindow (Gtk.Application app, Client client, GLib.MenuModel menu)
+		public MainWindow (Gtk.Application app, Client client)
 		{
 			Object(application: app);
 
@@ -59,7 +59,7 @@ namespace Abraca {
 
 			var accel_group = new Gtk.AccelGroup();
 
-			_main_ui = create_widgets(client, accel_group, menu);
+			_main_ui = create_widgets(client, accel_group);
 
 			_now_playing = new NowPlaying(client);
 			_now_playing.hide_now_playing.connect (on_hide_now_playing);
@@ -224,7 +224,7 @@ namespace Abraca {
 			return button;
 		}
 
-		private Gtk.Widget create_widgets (Client client, Gtk.AccelGroup accel_group, GLib.MenuModel menu_model)
+		private Gtk.Widget create_widgets (Client client, Gtk.AccelGroup accel_group)
 		{
 			_config = new Config ();
 
@@ -249,11 +249,6 @@ namespace Abraca {
 			headerbar.show_close_button = true;
 			headerbar.custom_title = playback_label;
 			headerbar.pack_start(playback_btns);
-
-			var menu = new Gtk.MenuButton();
-			menu.image = new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.BUTTON);
-			menu.menu_model = menu_model;
-			headerbar.pack_end(menu);
 
 			set_titlebar(headerbar);
 

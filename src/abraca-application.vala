@@ -100,9 +100,8 @@ public class Abraca.Application : Gtk.Application {
 			builder.add_from_resource("/org/xmms2/Abraca/ui/main_menu.xml");
 
 			app_menu = builder.get_object ("app-menu") as MenuModel;
-			var menu = builder.get_object("win-menu") as MenuModel;
 
-			window = new MainWindow(this, client, menu);
+			window = new MainWindow(this, client);
 			application_timeout.connect(window.on_application_idle);
 
 			Configurable.load();
