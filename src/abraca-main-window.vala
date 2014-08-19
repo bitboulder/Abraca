@@ -286,7 +286,7 @@ namespace Abraca {
 
 			var pbox = new Gtk.Box(Gtk.Orientation.VERTICAL,0);
 			var playlist = new PlaylistWidget (client, resolver, _config, medialib, search);
-			_time_label = new Gtk.Label(_(""));
+			_time_label = new Gtk.Label("");
 			pbox.pack_start(playlist, true, true, 0);
 			pbox.pack_start(_time_label, false, false, 0);
 			var ptool = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
