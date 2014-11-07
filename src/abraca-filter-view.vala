@@ -59,7 +59,6 @@ namespace Abraca {
 
 		private MetadataResolver resolver;
 
-
 		public FilterView (Client c, MetadataResolver r, Medialib m, Config g)
 		{
 			medialib = m;
@@ -83,7 +82,6 @@ namespace Abraca {
 			button_press_event.connect(on_button_press_event);
 			row_activated.connect(on_row_activated);
 			key_press_event.connect(on_key_press_event);
-			columns_changed.connect(on_columns_changed);
 
 			notify["sorting"].connect(on_sorting_changed);
 
@@ -96,20 +94,28 @@ namespace Abraca {
 		public void get_configuration (GLib.KeyFile file)
 		{
 			FilterModel store = (FilterModel) model;
-			file.set_string_list("filter", "columns", store.dynamic_columns);
+
+			var columns = get_columns();
+			var names = new string[columns.length()];
+			var i = 0;
+
+			foreach (var column in columns)
+				names[i++] = column.title;
+
+			file.set_string_list("filter", "columns", names);
 		}
 
 
 		public void set_configuration (GLib.KeyFile file)
 			throws GLib.KeyFileError
 		{
-			string[] list;
+			string[] list = new string[0];
 
-			if (file.has_group("filter") && file.has_key("filter", "columns")) {
+			if (file.has_group("filter") && file.has_key("filter", "columns"))
 				list = file.get_string_list("filter", "columns");
-			} else {
-				list = new string[] {"artist", "title", "album"};
-			}
+
+			if (list.length == 0)
+				list = new string[] {"artist", "album", "tracknr", "title", "duration"};
 
 			set_dynamic_columns(list);
 		}
@@ -287,22 +293,6 @@ namespace Abraca {
 		}
 
 
-		private void on_columns_changed ()
-		{
-			if (model != null) {
-				var columns = get_columns();
-				var modified = new string[columns.length()];
-				int i = 0;
-
-				foreach (var column in columns) {
-					modified[i++] = column.title;
-				}
-
-				set_dynamic_columns(modified);
-			}
-		}
-
-
 		private void on_row_activated (Gtk.TreeView tree, Gtk.TreePath path,
 		                               Gtk.TreeViewColumn column)
 		{
@@ -378,7 +368,7 @@ namespace Abraca {
 				);
 				column.resizable = true;
 				column.reorderable = true;
-				column.fixed_width = 120;
+				column.expand = true;
 				column.sizing = Gtk.TreeViewColumnSizing.FIXED;
 				column.clickable = true;
 				column.widget = new Gtk.Label(_(key));
@@ -415,9 +405,7 @@ namespace Abraca {
 							} else {
 								order = Gtk.SortType.DESCENDING;
 							}
-							/* TODO: This temp variable is needed due to a bug in vala 0.11.5 */
-							Sorting tmp = {column.title, order};
-							sorting = tmp;
+							sorting = { column.title, order };
 							break;
 						}
 					}
@@ -441,49 +429,50 @@ namespace Abraca {
 
 		private void on_header_edit (Gtk.MenuItem item)
 		{
-			var store = (FilterModel) model;
 			var edit = new FilterEditor();
 
 			edit.transient_for = get_ancestor (typeof(Gtk.Window)) as Gtk.Window;
 
 			edit.column_changed.connect((editor, prop, enabled) => {
-				string[] modified;
-				int i = 0;
+				var columns = (model as FilterModel).dynamic_columns;
+				var i = 0;
 
-				if (enabled) {
-					modified = new string[store.dynamic_columns.length + 1];
-				} else {
-					modified = new string[store.dynamic_columns.length - 1];
-				}
-
-				foreach (unowned string s in store.dynamic_columns) {
-					if (!enabled && s == prop) {
+				var modified = new string[columns.length + (enabled ? 1 : -1)];
+				foreach (unowned string s in columns) {
+					if (!enabled && s == prop)
 						continue;
-					}
 					modified[i++] = s;
 				}
 
-				if (enabled) {
+				if (enabled)
 					modified[i] = prop;
-				}
 
 				set_dynamic_columns(modified);
 			});
 
-			edit.set_active(store.dynamic_columns);
+			edit.set_active((model as FilterModel).dynamic_columns);
 			edit.run();
 		}
 
 
 		private void on_header_remove (Gtk.MenuItem item)
 		{
+			var columns = get_columns();
+			if (columns.length() == 1)
+				return;
+
+			var modified = new string[columns.length() - 1];
+			var i = 0;
+
 			var title = ((Gtk.Menu) item.parent).tearoff_title;
-			foreach (var column in get_columns()) {
-				if (column.title == title) {
+			foreach (var column in columns) {
+				if (column.title == title)
 					remove_column(column);
-					break;
-				}
+				else
+					modified[i++] = column.title;
 			}
+
+			set_dynamic_columns(modified);
 		}
 
 
