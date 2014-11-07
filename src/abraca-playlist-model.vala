@@ -93,7 +93,7 @@ namespace Abraca {
 			client.playback_status.connect(on_playback_status);
 
 			client.medialib_entry_changed.connect((c, res) => {
-				on_medialib_info(res);
+				on_medialib_info(res.propdict_to_dict());
 			});
 		}
 
@@ -179,7 +179,7 @@ namespace Abraca {
 				get(it,Column.DURATION,out dur);
 				pl+=dur;
 			}
-			if(MainWindow.instance!=null) MainWindow.instance.playtime_set(pl);
+			if(Window.instance!=null) Window.instance.playtime_set(pl);
 		}
 
 		/**

@@ -20,7 +20,6 @@ sources = """
     abraca-filter-searchbox.vala
     abraca-filter-view.vala
     abraca-filter-widget.vala
-    abraca-main-window.vala
     abraca-medialib.vala
     abraca-nowplaying.vala
     abraca-playlist-model.vala
@@ -43,6 +42,7 @@ sources = """
     abraca-cat-view.vala
     abraca-rpt-button.vala
     abraca-image-menu-item.vala
+    abraca-window.vala
 """.split()
 
 bld.objects(

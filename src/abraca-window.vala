@@ -18,21 +18,19 @@
  */
 
 namespace Abraca {
-	public class MainWindow : Gtk.ApplicationWindow, IConfigurable {
+	public class Window : Gtk.ApplicationWindow, IConfigurable {
 		private static Gtk.Image PLAYBACK_PAUSE_IMAGE = new Gtk.Image.from_icon_name("media-playback-pause", Gtk.IconSize.BUTTON);
 		private static Gtk.Image PLAYBACK_PLAY_IMAGE = new Gtk.Image.from_icon_name("media-playback-start", Gtk.IconSize.BUTTON);
 
 		private Client client;
 		private Config config;
-		private Gtk.Widget toolbar;
 		private Gtk.Paned main_hpaned;
 		private Gtk.Paned right_hpaned;
 		private Gtk.Widget main_ui;
 		private NowPlaying now_playing;
-		private bool is_idle = false;
 		private MetadataResolver resolver;
 		private Gtk.Label time_label;
-		public static MainWindow instance = null;
+		public static Window instance = null;
 		private Searchable search;
 		private Gtk.Dialog equalizer_dialog;
 		private Gtk.Button playback_toggle_btn;
@@ -51,7 +49,7 @@ namespace Abraca {
 			{ "fullscreen", on_fullscreen }
 		};
 
-		public MainWindow (Gtk.Application app, Client c)
+		public Window (Gtk.Application app, Client c)
 		{
 			Object(application: app);
 
@@ -245,7 +243,7 @@ namespace Abraca {
 			                                         "<Primary>Right", accel_group);
 			playback_btns.pack_start(playback_forward_btn);
 
-			playback_label = new Gtk.Label("Start playback!");
+			playback_label = new Gtk.Label("Abraca");
 			playback_label.get_style_context().add_class("abraca-playback-label");
 
 			var headerbar = new Gtk.HeaderBar();

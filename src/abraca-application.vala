@@ -18,7 +18,7 @@
  */
 
 public class Abraca.Application : Gtk.Application {
-	private MainWindow window;
+	private Window window;
 
 	private const ActionEntry[] actions = {
 		{ "about", on_menu_about },
@@ -74,7 +74,7 @@ public class Abraca.Application : Gtk.Application {
 
 			app_menu = builder.get_object ("app-menu") as MenuModel;
 
-			window = new MainWindow(this, client);
+			window = new Window(this, client);
 
 			Configurable.load();
 
