@@ -66,7 +66,6 @@ namespace Abraca {
 			now_playing = new NowPlaying(client);
 			now_playing.hide_now_playing.connect (on_unfullscreen);
 
-
 			add(main_ui);
 
 			try {
@@ -258,14 +257,12 @@ namespace Abraca {
 			var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
 			var position = new TimeSlider(client);
+			position.margin_top = headerbar.spacing;
+			position.margin_left = headerbar.spacing * 2;
+			position.margin_right = headerbar.spacing * 2;
+			position.margin_bottom = headerbar.spacing;
 
-			var align = new Gtk.Alignment(0.5f, 0.5f, 1.0f, 1.0f);
-			align.add(position);
-			align.top_padding = headerbar.spacing;
-			align.left_padding = headerbar.spacing * 2;
-			align.right_padding = headerbar.spacing * 2;
-			align.bottom_padding = headerbar.spacing;
-			vbox.pack_start(align, false, false, 0);
+			vbox.pack_start(position, false, false, 0);
 
 			var scrolled = new Gtk.ScrolledWindow (null, null);
 			scrolled.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -387,15 +384,9 @@ namespace Abraca {
 
 			add_accel_group(accel_group);
 
-			equalizer_dialog = new Gtk.Dialog.with_buttons(
-				"Equalizer", this, Gtk.DialogFlags.DESTROY_WITH_PARENT
-			);
+			equalizer_dialog = new Equalizer(client);
 			equalizer_dialog.window_position = Gtk.WindowPosition.CENTER_ON_PARENT;
-
-			var box = equalizer_dialog.get_content_area () as Gtk.Box;
-			box.pack_start (new Equalizer (client));
-			box.expand = true;
-			box.halign = Gtk.Align.FILL;
+			equalizer_dialog.transient_for = this;
 
 			return vbox;
 		}
