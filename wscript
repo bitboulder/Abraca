@@ -2,7 +2,7 @@
 # encoding: utf-8
 import os
 
-VERSION = '0.8.0'
+VERSION = '0.8.2'
 APPNAME = 'Abraca'
 
 top = '.'
@@ -42,6 +42,7 @@ def configure(conf):
 
 	conf.define('APPNAME', APPNAME)
 	conf.define('VERSION', VERSION)
+	conf.define('LOCALEDIR', '${LOCALEDIR}')
 
 	conf.write_config_header('build-config.h')
 
