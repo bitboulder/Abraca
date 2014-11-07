@@ -30,6 +30,7 @@ sources = """
     abraca-resolver.vala
     abraca-selected-rows-mixin.vala
     abraca-server-browser.vala
+    abraca-server-browser-dialog.vala
     abraca-server-discover-tcp.vala
     abraca-server-discover-unix.vala
     abraca-server-discover.vala
@@ -45,10 +46,17 @@ sources = """
     abraca-image-menu-item.vala
 """.split()
 
+bld.objects(
+    features = 'c',
+    uselib = 'GIO-2.0',
+    source='resources/abraca-ui.gresource.xml',
+    target='abraca-ui-resources',
+)
+
 bld.program(
     features     = 'c cprogram',
     target       = 'abraca',
-    use          = 'subzero resources',
+    use          = 'subzero abraca-img-resources abraca-ui-resources',
     packages     = 'gtk+-3.0 gio-unix-2.0 gee-1.0 xmms2-client-glib subzero posix gdk-add-filter build-config sqlite3',
     uselib       = 'GTK+-3.0 GMODULE-2.0 GIO-2.0 GEE-1.0 XMMS2-CLIENT XMMS2-CLIENT-GLIB math SQLITE3',
     source       = sources,

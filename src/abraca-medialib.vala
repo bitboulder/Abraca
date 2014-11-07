@@ -71,7 +71,7 @@ namespace Abraca {
 			var builder = new Gtk.Builder ();
 
 			try {
-				builder.add_from_resource("/org/xmms2/Abraca/ui/mediainfo.xml");
+				builder.add_from_resource("/org/xmms2/Abraca/ui/abraca-mediainfo.ui");
 			} catch (GLib.Error e) {
 				GLib.error(_("Could not load UI: %s"), e.message);
 			}
@@ -181,7 +181,7 @@ namespace Abraca {
 
 		private void set_str(Gtk.Editable editable, string key)
 		{
-			unowned string val = editable.get_chars(0, -1);
+			var val = editable.get_chars(0, -1);
 
 			client.xmms.medialib_entry_property_set_str(
 				current.data, key, val
