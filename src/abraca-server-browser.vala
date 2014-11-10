@@ -65,25 +65,18 @@ public class Abraca.ServerBrowser
 	private int localrep=0;
 	private bool dolocal()
 	{
-/*		discover_network.stop(); TODO: fix
+		discover_network.stop();
 		discover_unix.stop();
-		if(location_store.iter_n_children(null)>0){
-			unowned string connection_path;
-			Gtk.TreeIter iter;
-			location_store.get_iter_first(out iter);
-			location_store.get(iter, Column.PATH, out connection_path);
-			client.try_connect(connection_path);
-			return false;
-		}
+		if(dialog.try_connect(client)) return false;
 		if(localrep==0) on_launch_activated();
 		if(localrep>50){
-			run(false); */
+			run(false);
 			return false;
-/*		}
+		}
 		discover_network.start();
 		discover_unix.start();
 		localrep++; 
-		return true;*/
+		return true;
 	}
 
 	public void on_remote_selected(string name, string path)

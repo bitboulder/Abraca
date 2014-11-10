@@ -231,4 +231,14 @@ public class Abraca.ServerBrowserDialog : Gtk.Dialog
 
 		return false;
 	}
+
+	public bool try_connect(Client client){
+		if(location_store.iter_n_children(null)<=0) return false;
+		unowned string connection_path;
+		Gtk.TreeIter iter;
+		location_store.get_iter_first(out iter);
+		location_store.get(iter, Column.PATH, out connection_path);
+		client.try_connect(connection_path);
+		return true;
+	}
 }
