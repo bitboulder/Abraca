@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Frank Duckhorn <git@bitboulder.net>
 Build-Depends: valac (>= 0.20),
                libxmmsclient-glib-dev (>= 0.8),
-               libgee-dev,
+               libgee-0.8-dev,
                intltool,
                libgtk-3-dev,
 Standards-Version: 3.9.3

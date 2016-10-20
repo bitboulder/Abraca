@@ -258,7 +258,11 @@ public class Abraca.EqualizerModel : GLib.Object {
 				GLib.warning("Could not parse value for '%s': '%s'".printf(key, value));
 			}
 		} else if (key == "equalizer.preamp") {
-			preamp_changed(double_from_string(value));
+			try {
+				preamp_changed(double_from_string(value));
+			} catch (ConfigError e) {
+				GLib.warning("Could not parse value for '%s': '%s'".printf(key, value));
+			}
 		} else {
 			GLib.debug("Skipping %s = %s".printf(key, value));
 		}

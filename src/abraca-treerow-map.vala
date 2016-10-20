@@ -44,7 +44,7 @@ namespace Abraca {
 		public void add_path (int mid, Gtk.TreePath path)
 		{
 			if (!map.has_key(mid)) {
-				map.set(mid, new Gee.LinkedList<Gtk.TreeRowReference>((EqualFunc)compare_refs));
+				map.set(mid, new Gee.LinkedList<Gtk.TreeRowReference>(compare_refs));
 			}
 
 			var row_refs = map.get(mid);
